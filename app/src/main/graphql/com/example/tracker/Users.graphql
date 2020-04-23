@@ -1,0 +1,32 @@
+mutation AddUser($user: UserInput!){
+    addUser(user:$user){
+        id,
+        dateOfBirth
+    }
+}
+
+query Users {
+    users {
+        id, dateOfBirth, locationHistory {
+            latitude, longitude
+        }, symptomsHistory {
+            literal
+        }
+    }
+}
+
+mutation UpdateLocationHistory ($input:LocationListInput!){
+    updateLocationHistory(input:$input){
+        id, locationHistory{
+            latitude, longitude
+        }
+    }
+}
+
+mutation UpdateSymptomHistory ($input: SymptomsListInput!){
+    updateSymptomsHistory(input:$input){
+        id, symptomsHistory{
+            literal
+        }
+    }
+}
