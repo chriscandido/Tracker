@@ -16,15 +16,40 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:layout_width="200dp"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_startService"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="150dp"
-        android:backgroundTint="#2B7A78"
-        android:textColor="#fff"
-        app:layout_constraintTop_toBottomOf="@+id/text_Tracker"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        />
+        android:layout_marginLeft="30dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/montserrat_bold"
+        android:onClick="startService"
+        android:text="START"
+        android:textColor="#008744"
+        app:strokeColor="#008744"
+        app:strokeWidth="2dp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_stopService"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_stopService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/montserrat_bold"
+        android:onClick="stopService"
+        android:text="STOP"
+        android:textColor="#ff5252"
+        app:strokeColor="#ff5252"
+        app:strokeWidth="2dp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_startService"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
