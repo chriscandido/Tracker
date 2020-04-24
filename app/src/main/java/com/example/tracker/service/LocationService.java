@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.tracker.utils.Constants;
 import com.google.android.gms.location.DetectedActivity;
 
 import java.util.List;
@@ -27,10 +28,12 @@ import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesProv
 
 public class LocationService extends Service  {
 
+    public static boolean isServiceRunning = false;
     final LocationServiceBinder binder = new LocationServiceBinder();
     private LocationGooglePlayServicesProvider provider;
     Context context;
     Handler handler;
+    Runnable runnable;
 
     public LocationService(){
     }
@@ -52,15 +55,22 @@ public class LocationService extends Service  {
     }
 
     public int onStartCommand(Intent intent, int flags, int startId){
-        startLocationListener();
-        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+        if (intent != null){
+            startLocationListener();
+            Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+        } else {
+            stopService();
+        }
         return START_STICKY;
     }
 
     private void startLocationListener() {
 
-        long mLocTrackingInterval = 1000 *10;
-        float trackingDistance = 5;
+        if (isServiceRunning) return;
+        isServiceRunning = true;
+
+        long mLocTrackingInterval = 1000;
+        float trackingDistance = 1;
         LocationAccuracy trackingAccuracy = LocationAccuracy.HIGH;
 
         LocationParams.Builder builder = new LocationParams.Builder()
@@ -81,14 +91,22 @@ public class LocationService extends Service  {
                         String strLat = String.valueOf(lat);
                         String strLon = String.valueOf(lon);
                         Log.v("Location: ",  strLat + " && " + strLon);
+                        Toast.makeText(LocationService.this, "Location: " + strLat + " && " + strLon, Toast.LENGTH_LONG).show();
                     }
                 });
     }
 
     @Override
     public void onDestroy() {
+        isServiceRunning = false;
         super.onDestroy();
         Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
+    }
+
+    public void stopService(){
+        stopForeground(true);
+        stopSelf();
+        isServiceRunning = false;
     }
 
 }

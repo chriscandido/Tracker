@@ -16,34 +16,40 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button_startservice"
-        android:layout_width="150dp"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_startService"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:backgroundTint="#88d8b0"
         android:background="@android:color/transparent"
         android:fontFamily="@font/montserrat_bold"
+        android:onClick="startService"
         android:text="START"
         android:textColor="#008744"
-        android:onClick="startService"
-        app:cornerRadius="100dp"
+        app:strokeColor="#008744"
+        app:strokeWidth="2dp"
+        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_stopService"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
-    <Button
-        android:id="@+id/button_stopservice"
-        android:layout_width="150dp"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_stopService"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="30dp"
-        android:backgroundTint="#88d8b0"
         android:background="@android:color/transparent"
         android:fontFamily="@font/montserrat_bold"
-        android:text="STOP"
-        android:textColor="#d62d20"
         android:onClick="stopService"
-        app:cornerRadius="100dp"
+        android:text="STOP"
+        android:textColor="#ff5252"
+        app:strokeColor="#ff5252"
+        app:strokeWidth="2dp"
+        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_startService"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

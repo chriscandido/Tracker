@@ -20,7 +20,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"/>
-        <service android:name=".service.LocationService" />
+        <service android:name=".service.LocationService"
+            android:enabled="true">
+        </service>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
