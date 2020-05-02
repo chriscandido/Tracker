@@ -5,13 +5,9 @@ mutation AddUser($user: UserInput!){
     }
 }
 
-query Users {
+query UsersQuery ($users: ID!) {
     users {
-        id, dateOfBirth, locationHistory {
-            latitude, longitude
-        }, symptomsHistory {
-            literal
-        }
+        id
     }
 }
 

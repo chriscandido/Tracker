@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/dashboard"
+    tools:context=".DashboardActivity">
+
+    <ImageView
+        android:id="@+id/image_Logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/appicon" />
+
+    <TextView
+        android:id="@+id/text_Contra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ConTra COVID-19"
+        android:textSize="30sp"
+        android:fontFamily="@font/montserrat_bold"
+        android:textColor="#00838f"
+        android:textAlignment="gravity"
+        app:layout_constraintBottom_toTopOf="@id/text_Contra2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_Logo"/>
+
+    <TextView
+        android:id="@+id/text_Contra2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/text_AppDescription"
+        android:textSize="10sp"
+        android:fontFamily="@font/montserrat_bold"
+        android:textColor="#00838f"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/text_Contra"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/protection_btn"/>
+
+    <ImageButton
+        android:id="@+id/protection_btn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/button_roundcorner"
+        android:clickable="true"
+        android:onClick="goToStaySafe"
+        android:scaleType="fitStart"
+        android:adjustViewBounds="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_Contra2"
+        app:srcCompat="@drawable/protection_btn"
+        android:contentDescription="@string/todo"
+        android:focusable="true" />
+
+    <ImageButton
+        android:id="@+id/maps_btn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/button_roundcorner"
+        android:scaleType="fitStart"
+        android:adjustViewBounds="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="goToMapActivity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/protection_btn"
+        app:srcCompat="@drawable/maps_btn"
+        android:contentDescription="@string/todo" />
+
+    <ImageButton
+        android:id="@+id/symptoms_btn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/button_roundcorner"
+        android:scaleType="fitStart"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="gotToUpdateSymptoms"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maps_btn"
+        app:srcCompat="@drawable/symptoms_btn"
+        android:contentDescription="@string/todo" />
+
+    <ImageButton
+        android:id="@+id/contact_tracing_btn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/button_roundcorner"
+        android:scaleType="fitStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/symptoms_btn"
+        app:srcCompat="@drawable/contact_tracing_btn"
+        android:contentDescription="@string/todo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

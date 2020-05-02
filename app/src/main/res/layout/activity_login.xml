@@ -24,6 +24,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/phone_number"
         android:layout_marginBottom="20dp"
+        android:onClick="gotoMainActivity"
+        android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/button_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,17 +37,37 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button_login"
+        android:id="@+id/button_subscribe"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_marginTop="50dp"
-        android:text="@string/login"
+        android:layout_marginTop="10dp"
+        android:text="Subscribe"
         android:textColor="#fff"
         android:backgroundTint="#ff6f69"
         android:paddingBottom="10dp"
         app:cornerRadius="100dp"
+        app:layout_constraintBottom_toTopOf="@id/button_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_dateOfBirth" />
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/login"
+        android:textColor="#fff"
+        android:backgroundTint="#ff6f69"
+        android:paddingBottom="10dp"
+        android:onClick="gotoMainActivity"
+        android:clickable="true"
+        android:visibility="gone"
+        app:cornerRadius="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_subscribe" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

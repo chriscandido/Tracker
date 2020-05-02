@@ -1,45 +1,137 @@
 package com.example.tracker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
-import android.view.autofill.AutofillId;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
 
-import com.apollographql.apollo.ApolloCall;
-import com.apollographql.apollo.api.Response;
-import com.apollographql.apollo.exception.ApolloException;
-import com.example.tracker.service.ApolloClient;
+import com.example.tracker.db.UserDBHandler;
 import com.example.tracker.service.LocationService;
-import com.example.tracker.type.LocationInput;
-import com.example.tracker.type.LocationListInput;
-import com.example.tracker.type.UserInput;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Used in checking for runtime permissions.
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private static final int LOCATION_PERMISSION_ID = 1001;
+    UserDBHandler userDBHandler = new UserDBHandler(this);
 
+    private LocationService locationService;
+    private boolean mBound = false;
+
+    String uid;
+
+    Button button_Start, button_Stop;
+    ImageButton button_Dashboard;
+
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //apolloConnector();
+        ConstraintLayout constraintLayout = findViewById(R.id.frameLayout);
+        AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+
+        animationDrawable.setEnterFadeDuration(5000);
+        animationDrawable.setExitFadeDuration(2000);
+
+        animationDrawable.start();
+
+        button_Start = findViewById(R.id.button_startService);
+        button_Stop = findViewById(R.id.button_stopService);
+        button_Dashboard = findViewById(R.id.image_Setting);
+
+        button_Start.setOnClickListener(new onClick());
+        button_Stop.setOnClickListener(new onClick());
+        //setSupportActionBar(toolbar);
+
+        userDBHandler.initializeDB();
+        onClickDashboard();
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        if (!isServiceRunning(LocationService.class)){
+            Intent intent = new Intent(this, LocationService.class);
+            startService(intent);
+        } else {
+            stopService();
+        }
+
     }
 
-    public void startService(View view){
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            LocationService.LocalBinder binder = (LocationService.LocalBinder) service;
+            locationService = binder.getServiceInstance();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            locationService = null;
+            mBound = false;
+        }
+    };
+
+    public class onClick implements View.OnClickListener{
+        @Override
+        public void onClick(View view){
+            switch (view.getId()){
+                case R.id.button_startService:
+                    button_Start.setVisibility(View.GONE);
+                    button_Stop.setVisibility(View.VISIBLE);
+                    startService();
+                    break;
+                case R.id.button_stopService:
+                    button_Start.setVisibility(View.VISIBLE);
+                    button_Stop.setVisibility(View.GONE);
+                    stopService();
+                    break;
+            }
+        }
+    }
+
+    public void onClickDashboard(){
+        button_Dashboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private boolean isServiceRunning(Class<?> serviceClass){
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo serviceInfo : manager.getRunningServices(Integer.MAX_VALUE)){
+            if (serviceClass.getName().equals(serviceInfo.service.getClassName())){
+                return true;
+            }
+        }return false;
+    }
+
+
+    public void startService(){
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_ID);
             return;
@@ -47,74 +139,38 @@ public class MainActivity extends AppCompatActivity {
         startService(new Intent(getBaseContext(), LocationService.class));
     }
 
-    public UserInput addUserData(Integer input){
-        UserInput userInput = UserInput.builder()
-                .dateOfBirth(input)
-                .build();
-        return userInput;
+    public void onStart(){
+        super.onStart();
+        if (!checkPermissions()){
+            requestPermissions();
+        }
+        // Bind to the service. If the service is in foreground mode, this signals to the service
+        // that since this activity is in the foreground, the service can exit foreground mode.
+        bindService(new Intent(this, LocationService.class), serviceConnection,
+                Context.BIND_AUTO_CREATE);
     }
 
-    public LocationInput locationInput(double lat, double lon, int createdat){
-        LocationInput locationInput = LocationInput.builder()
-                .latitude(lat)
-                .longitude(lon)
-                .createdAt(createdat)
-                .build();
-
-        return locationInput;
-    }
-
-    public LocationListInput locationInputs(LocationInput locationInputList, String id){
-        List<LocationInput> locationInputs = new ArrayList<>();
-        locationInputs.add(locationInputList);
-        LocationListInput locationListInput = LocationListInput.builder()
-                .list(locationInputs)
-                .ownerId(id)
-                .build();
-
-        return locationListInput;
-
-    }
-
-    public void apolloConnector(){
-        ApolloClient.setupApollo().mutate(AddUserMutation.builder().user(addUserData(504921610)).build())
-                .enqueue(new ApolloCall.Callback<AddUserMutation.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<AddUserMutation.Data> response) {
-                        AddUserMutation.Data data = response.data();
-                        Log.v("Response: ", data.toString());
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-
-                    }
-                });
-
-        Double lat = 14.6529735;
-        Double lon = 121.0561203;
-        Integer n = 1586823537;
-        String id = "f7aab801-21b2-46af-9b7f-895dadd91187";
-
-        LocationInput loc = locationInput(lat, lon, n);
-        LocationListInput locList = locationInputs(loc, id);
-
-        ApolloClient.setupApollo().mutate(UpdateLocationHistoryMutation.builder().input(locList).build())
-                .enqueue(new ApolloCall.Callback<UpdateLocationHistoryMutation.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<UpdateLocationHistoryMutation.Data> response) {
-                        UpdateLocationHistoryMutation.Data data = response.data();
-                        Log.v("Response: ", data.toString());
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-
-                    }
-                });
-    }
-
-    public void stopService(View view){
+    public void stopService(){
         stopService(new Intent(getBaseContext(), LocationService.class));
     }
+
+    public void onResume() {
+        super.onResume();
+    }
+
+    public void onPause() {
+        super.onPause();
+    }
+
+    private boolean checkPermissions() {
+        return  PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSIONS_REQUEST_CODE);
+    }
 }
+
+
+

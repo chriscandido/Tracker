@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.UpdateSymptomsActivity">
+
+    <TextView
+        android:id="@+id/symptoms_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Symptoms"
+        android:textColor="#000"
+        android:background="#fff"
+        android:paddingTop="35dp"
+        android:paddingBottom="15dp"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:fontFamily="@font/montserrat"
+        android:gravity="center_horizontal" />
+
+    <ScrollView
+        android:id="@+id/symptoms_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/symptoms_title"
+        android:layout_above="@+id/symptoms_buttons"
+        android:layout_marginBottom="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="45dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Check all that apply."
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="15dp"
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/montserrat"/>
+
+            <CheckBox
+                android:id="@+id/symptoms_severerespiratoryinfection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Severe Respiratory Infection"
+                android:fontFamily="@font/montserrat"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="8dp"/>
+            <CheckBox
+                android:id="@+id/symptoms_pneumonia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pneumonia"
+                android:fontFamily="@font/montserrat"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="8dp"/>
+            <CheckBox
+                android:id="@+id/symptoms_fever"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fever"
+                android:fontFamily="@font/montserrat"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="8dp"/>
+            <CheckBox
+                android:id="@+id/symptoms_diarrhea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Diarrhea"
+                android:fontFamily="@font/montserrat"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="8dp"/>
+            <CheckBox
+                android:id="@+id/symptoms_bodyaches"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Body Aches"
+                android:fontFamily="@font/montserrat"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="8dp"/>
+            <CheckBox
+                android:id="@+id/symptoms_tiredness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tiredness"
+                android:fontFamily="@font/montserrat"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="8dp"/>
+            <CheckBox
+                android:id="@+id/symptoms_runnynose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Runny Nose"
+                android:fontFamily="@font/montserrat"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="8dp"/>
+            <CheckBox
+                android:id="@+id/symptoms_difficultyinbreathing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Difficulty in Breathing"
+                android:fontFamily="@font/montserrat"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="8dp"/>
+            <CheckBox
+                android:id="@+id/symptoms_lossofsmell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loss of Smell"
+                android:fontFamily="@font/montserrat"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="8dp"/>
+            <CheckBox
+                android:id="@+id/symptoms_lossoftaste"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loss of Taste"
+                android:fontFamily="@font/montserrat"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="8dp"/>
+
+            <EditText
+                android:id="@+id/symptoms_othersymptomsfield"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="10dp"
+                android:hint="What are your other symptoms?"
+                android:textSize="15sp"
+                android:fontFamily="@font/montserrat"
+                android:inputType="textCapSentences"
+                android:padding="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="When did you first experience these?"
+                android:fontFamily="@font/montserrat"
+                android:textSize="15sp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp">
+
+                <Button
+                    android:id="@+id/select_date_btn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select Date"
+                    android:textColor="#000"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/montserrat"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/date_selected"/>
+
+                <EditText
+                    android:id="@+id/date_selected"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:textAlignment="gravity"
+                    android:fontFamily="@font/montserrat"
+                    android:gravity="center_vertical"
+                    android:background="@android:color/transparent"
+                    android:layout_marginHorizontal="30dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/select_date_btn" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/symptoms_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/symptoms_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/montserrat"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="Submit"
+            android:textColor="#00838f"
+            app:cornerRadius="5dp"
+            app:strokeColor="#00838f"
+            app:strokeWidth="1dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/symptoms_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@android:color/transparent"
+            android:text="Cancel"
+            android:textColor="#000"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_alignParentRight="true"
+            app:cornerRadius="5dp"
+            app:strokeColor="#000"
+            app:strokeWidth="1dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+    </RelativeLayout>
+</RelativeLayout>
