@@ -32,8 +32,6 @@ public class DashboardActivity extends AppCompatActivity {
         button_staySafe.setOnTouchListener(new onTouch());
         button_mapActivity.setOnTouchListener(new onTouch());
         button_updateSymptoms.setOnTouchListener(new onTouch());
-
-
     }
 
     public class onTouch implements View.OnTouchListener{
@@ -77,6 +75,8 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     public void onBackPressed(){
-
+        super.onBackPressed();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

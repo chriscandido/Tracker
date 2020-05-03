@@ -164,7 +164,7 @@ public class UserDBHandler extends SQLiteOpenHelper {
     }
 
     //----------------------------------------------------------------------------------------------add symptoms of the user
-    public void addSymptoms(String symptoms, Integer time){
+    public void addSymptoms (String symptoms, Integer time){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues symptomValues = new ContentValues();
@@ -246,6 +246,35 @@ public class UserDBHandler extends SQLiteOpenHelper {
 
         }
         return locationHolder;
+    }
+
+    //----------------------------------------------------------------------------------------------get the last symptoms
+    public UserDBSymptoms getLastSymptoms(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        UserDBSymptoms userDBSymptoms = null;
+
+        String QUERY = "SELECT "
+                + KEY_SYMPTOMS + ","
+                + KEY_CREATEDAT + " FROM "
+                + TABLE_SYMPTOMS + " ORDER BY "
+                + KEY_ID + " DESC LIMIT 1";
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        //String symptoms = "";
+        //Integer date = 0;
+
+        if (cursor != null){
+            if (cursor.moveToFirst()){
+                String symptoms = cursor.getString(0);
+                Integer date = cursor.getInt(1);
+                userDBSymptoms = new UserDBSymptoms(symptoms, date);
+                Log.d("DATABASE", "[#] DatabaseHandler.java - SYMPTOMS: " + userDBSymptoms.getSymptoms()
+                + " && " + "TIME: " + userDBSymptoms.getDate());
+            } else
+                Log.v("DATABASE", "[#] DatabaseHandler.java - Symptoms Table is Empty");
+            cursor.close();
+        }
+        return userDBSymptoms;
     }
 
     //----------------------------------------------------------------------------------------------get unique id of the user

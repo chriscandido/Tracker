@@ -18,11 +18,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.example.tracker.ContactTracing;
 import com.example.tracker.DashboardActivity;
 import com.example.tracker.R;
+import com.example.tracker.UpdateLocationHistoryMutation;
+import com.example.tracker.UpdateSymptomHistoryMutation;
 import com.example.tracker.db.UserDBHandler;
+import com.example.tracker.service.ApolloClient;
+import com.example.tracker.type.SymptomsInput;
+import com.example.tracker.type.SymptomsListInput;
+import com.example.tracker.utils.UserDBSymptoms;
 import com.google.gson.Gson;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -134,6 +145,12 @@ public class UpdateSymptomsActivity extends AppCompatActivity {
            switch (v.getId()){
                case R.id.symptoms_submit:
                    insertToDB(userSymptoms, date);
+                   List<String> symptoms = getDataFromDB();
+                   Integer userDate = userDBHandler.getLastSymptoms().getDate();
+                   String uniquedId = userDBHandler.getKeyUniqueid();
+                   insertToServer(symptoms, userDate, uniquedId);
+                   Log.d("SERVER", "[#] UpdateSymptomsActivity.java - SYMPTOMS: " + symptoms +
+                   " && " + " DATE " + userDate);
                    goToDashboard();
                    break;
                case R.id.symptoms_cancel:
@@ -150,6 +167,56 @@ public class UpdateSymptomsActivity extends AppCompatActivity {
         userDBHandler.addSymptoms(inputSymptoms,time);
         Log.d("JSON ARRAY", "[#] UpdateSymptomsActivity.java - SYMPTOMS: " + inputSymptoms
         + " && " + "DATE: " + date);
+   }
+
+   public List<String> getDataFromDB(){
+        String userSymptoms =  userDBHandler.getLastSymptoms().getSymptoms();
+        Integer userDate = userDBHandler.getLastSymptoms().getDate();
+        UserDBSymptoms userDBSymptoms= new UserDBSymptoms(userSymptoms, userDate);
+        List<String> symptomsList = userDBSymptoms.getListString(userSymptoms);
+        return symptomsList;
+   }
+
+   //-----------------------------------------------------------------------------------------------Server Communication
+   public SymptomsInput symptomsInput (List<String> userSymptoms, Integer createdAt){
+        SymptomsInput symptomsInput = SymptomsInput.builder()
+                .literal(userSymptoms)
+                .createdAt(createdAt)
+                .build();
+       return symptomsInput;
+   }
+
+   public SymptomsListInput symptomsListInput(SymptomsInput symptomsInput, String id){
+        List<SymptomsInput> symptomsInputs = new ArrayList<>();
+        symptomsInputs.add(symptomsInput);
+        SymptomsListInput symptomsListInput = SymptomsListInput.builder()
+                .list(symptomsInputs)
+                .ownerId(id)
+                .build();
+        return symptomsListInput;
+   }
+
+   public void insertToServer (List<String> userSymptoms, Integer createdAt, String uid){
+
+        SymptomsInput symptomsInput = symptomsInput(userSymptoms, createdAt);
+        SymptomsListInput symptomsListInput = symptomsListInput(symptomsInput, uid);
+
+        ApolloClient.setupApollo().mutate(UpdateSymptomHistoryMutation.builder().input(symptomsListInput).build())
+               .enqueue(new ApolloCall.Callback<UpdateSymptomHistoryMutation.Data>() {
+                   @Override
+                   public void onResponse(@NotNull Response<UpdateSymptomHistoryMutation.Data> response) {
+                       UpdateSymptomHistoryMutation.Data data = response.data();
+                       Log.v("SERVER: ", "[#] UpdateSymptomsActivity.java: " + data.toString());
+                   }
+                   @Override
+                   public void onFailure(@NotNull ApolloException e) {
+
+                   }
+               });
+
+       Log.d("DATABASE", "[#] UpdateSymptomsActivity.java - SYMPTOMS: " + userSymptoms +
+               " && " + " DATE " + createdAt + "ADDED TO " + " UNIQUE ID: " + uid);
+
    }
 
    public void goToDashboard(){

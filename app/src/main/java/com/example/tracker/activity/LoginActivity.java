@@ -73,8 +73,6 @@ public class LoginActivity extends AppCompatActivity{
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra("dateOfBirth", random);
             startActivity(intent);
-        } else {
-
         }
     }
 
@@ -99,7 +97,6 @@ public class LoginActivity extends AppCompatActivity{
                         public void onClick(View v) {
                             number = text_inputNum.getEditText().getText().toString();
                             random = ThreadLocalRandom.current().nextInt(10000000, 99999999);
-
                             ApolloClient.setupApollo().mutate(AddUserMutation.builder().user(addUserData(random)).build())
                                 .enqueue(new ApolloCall.Callback<AddUserMutation.Data>() {
                                     @Override
@@ -116,7 +113,6 @@ public class LoginActivity extends AppCompatActivity{
 
                     }
             );
-
     }
 
     private boolean checkPermission(String sendSMS){
@@ -149,11 +145,9 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private void postDataToDatabase(String uid, Integer random){
-
         userDBHelper = new UserDBHelper(uid);
         userDBHandler.addUser(userDBHelper);
         String new_uid = userDBHandler.getKeyUniqueid();
-
         if (userDBHandler.checkUniqueId(new_uid)){
             PreferenceActivity.saveUniqueId(new_uid, this);
             Intent intent = new Intent (getApplicationContext(), MainActivity.class);
@@ -161,9 +155,6 @@ public class LoginActivity extends AppCompatActivity{
             startActivity(intent);
             Log.d("LOGIN RESPONSE", "[#] LoginActivity.java - SUCCESS! UNIQUE ID added to Database: " + new_uid);
             finish();
-
         }
     }
-
-
 }

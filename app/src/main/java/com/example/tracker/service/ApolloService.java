@@ -13,6 +13,7 @@ import com.apollographql.apollo.exception.ApolloException;
 import com.example.tracker.UpdateLocationHistoryMutation;
 import com.example.tracker.type.LocationInput;
 import com.example.tracker.type.LocationListInput;
+import com.example.tracker.type.SymptomsInput;
 
 import org.jetbrains.annotations.NotNull;
 
