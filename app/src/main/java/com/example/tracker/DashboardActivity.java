@@ -2,6 +2,7 @@ package com.example.tracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -16,8 +17,9 @@ import com.example.tracker.activity.UpdateSymptomsActivity;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    ImageButton button_staySafe, button_mapActivity, getButton_updateSymptoms;
+    ImageButton button_staySafe, button_mapActivity, button_updateSymptoms;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,11 +27,12 @@ public class DashboardActivity extends AppCompatActivity {
 
         button_staySafe = findViewById(R.id.protection_btn);
         button_mapActivity = findViewById(R.id.maps_btn);
-        getButton_updateSymptoms = findViewById(R.id.symptoms_btn);
+        button_updateSymptoms = findViewById(R.id.symptoms_btn);
 
         button_staySafe.setOnTouchListener(new onTouch());
         button_mapActivity.setOnTouchListener(new onTouch());
-        getButton_updateSymptoms.setOnTouchListener(new onTouch());
+        button_updateSymptoms.setOnTouchListener(new onTouch());
+
 
     }
 
@@ -58,7 +61,6 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     public void goToMapActivity(View view){
         Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
@@ -67,5 +69,14 @@ public class DashboardActivity extends AppCompatActivity {
     public void gotToUpdateSymptoms(View view){
         Intent intent = new Intent(this, UpdateSymptomsActivity.class);
         startActivity(intent);
+    }
+
+    public void goToMain(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void onBackPressed(){
+
     }
 }

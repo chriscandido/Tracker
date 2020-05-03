@@ -125,4 +125,25 @@
         app:srcCompat="@drawable/contact_tracing_btn"
         android:contentDescription="@string/todo" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/dashboard_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:text="Back"
+        android:textColor="#00838f"
+        android:fontFamily="@font/montserrat"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:background="@android:color/transparent"
+        android:onClick="goToMain"
+        android:clickable="true"
+        app:strokeColor="#00838f"
+        app:strokeWidth="1dp"
+        app:cornerRadius="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

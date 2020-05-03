@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void stopService(){
+        //userDBHandler.deleteAll();
         stopService(new Intent(getBaseContext(), LocationService.class));
     }
 
@@ -161,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
     }
+
+    public void onBackPressed(){ }
 
     private boolean checkPermissions() {
         return  PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this,
