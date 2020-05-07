@@ -60,18 +60,22 @@
         app:layout_constraintStart_toStartOf="parent"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
-    <ImageButton
-        android:id="@+id/image_Setting"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@android:color/transparent"
-        android:adjustViewBounds="true"
-        android:scaleType="centerInside"
-        android:onClick="goToDashboard"
+
+    <TextView
+        android:id="@+id/textview_MainMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:clickable="true"
+        android:onClick="goToDashboard"
+        android:text="MENU"
+        android:textColor="#00838f"
+        android:background="@android:color/transparent"
+        android:textSize="20sp"
+        android:fontFamily="@font/montserrat_bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/setting"
         android:focusable="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

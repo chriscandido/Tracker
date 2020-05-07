@@ -24,7 +24,7 @@
         android:id="@+id/text_Contra"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ConTra COVID-19"
+        android:text="ConTra +"
         android:textSize="30sp"
         android:fontFamily="@font/montserrat_bold"
         android:textColor="#00838f"

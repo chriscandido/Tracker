@@ -11,6 +11,7 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
@@ -24,7 +25,19 @@ import android.widget.ImageButton;
 
 import com.example.tracker.db.UserDBHandler;
 import com.example.tracker.service.LocationService;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.maps.model.Dash;
 import com.google.android.material.snackbar.Snackbar;
+
+import static io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesProvider.REQUEST_CHECK_SETTINGS;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,27 +71,28 @@ public class MainActivity extends AppCompatActivity {
 
         button_Start = findViewById(R.id.button_startService);
         button_Stop = findViewById(R.id.button_stopService);
-        button_Dashboard = findViewById(R.id.image_Setting);
+        //button_Dashboard = findViewById(R.id.image_Setting);
 
         button_Start.setOnClickListener(new onClick());
         button_Stop.setOnClickListener(new onClick());
         //setSupportActionBar(toolbar);
 
         userDBHandler.initializeDB();
-        onClickDashboard();
+        //onClickDashboard();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         if (!isServiceRunning(LocationService.class)){
             Intent intent = new Intent(this, LocationService.class);
             startService(intent);
+            displayLocationSettingsRequest(this);
         } else {
             stopService();
         }
 
     }
 
-    private final ServiceConnection serviceConnection = new ServiceConnection() {
+    /*private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             LocationService.LocalBinder binder = (LocationService.LocalBinder) service;
@@ -91,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             locationService = null;
             mBound = false;
         }
-    };
+    };*/
 
     public class onClick implements View.OnClickListener{
         @Override
@@ -110,13 +124,59 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
+    /*
     public void onClickDashboard(){
         button_Dashboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                 startActivity(intent);
+            }
+        });
+    }*/
+
+    public void goToDashboard(View view){
+        Intent intent = new Intent (getApplicationContext(), DashboardActivity.class);
+        startActivity(intent);
+    }
+
+    private void displayLocationSettingsRequest(Context context) {
+        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
+                .addApi(LocationServices.API).build();
+        googleApiClient.connect();
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(10000 / 2);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+        builder.setAlwaysShow(true);
+
+        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(LocationSettingsResult result) {
+                final Status status = result.getStatus();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        Log.i("SETTINGS", "[#] MainActivity.java - LOCATION SETTINGS: All location settings are satisfied.");
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        Log.i("SETTINGS", "[#] MainActivity.java - LOCATION SETTINGS: Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
+
+                        try {
+                            // Show the dialog by calling startResolutionForResult(), and check the result
+                            // in onActivityResult().
+                            status.startResolutionForResult(MainActivity.this, REQUEST_CHECK_SETTINGS);
+                        } catch (IntentSender.SendIntentException e) {
+                            Log.i("SETTINGS", "[#] MainActivity.java - LOCATION SETTINGS: PendingIntent unable to execute request.");
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        Log.i("SETTINGS", "[#] MainActivity.java - LOCATION SETTINGS: Location settings are inadequate, and cannot be fixed here. Dialog not created.");
+                        break;
+                }
             }
         });
     }
@@ -137,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         startService(new Intent(getBaseContext(), LocationService.class));
+        displayLocationSettingsRequest(this);
     }
 
     public void onStart(){
@@ -146,8 +207,8 @@ public class MainActivity extends AppCompatActivity {
         }
         // Bind to the service. If the service is in foreground mode, this signals to the service
         // that since this activity is in the foreground, the service can exit foreground mode.
-        bindService(new Intent(this, LocationService.class), serviceConnection,
-                Context.BIND_AUTO_CREATE);
+        /*bindService(new Intent(this, LocationService.class), serviceConnection,
+                Context.BIND_AUTO_CREATE);*/
     }
 
     public void stopService(){

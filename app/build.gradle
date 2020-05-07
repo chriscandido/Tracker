@@ -65,7 +65,9 @@ dependencies {
     //Google Maps
     implementation "com.google.android.gms:play-services-places:17.0.0"
     implementation "com.google.android.gms:play-services-auth:18.0.0"
+    implementation "com.google.android.gms:play-services-nearby:17.0.0"
     //MapBox
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.1.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-markerview-v9:0.4.0'
 
 }

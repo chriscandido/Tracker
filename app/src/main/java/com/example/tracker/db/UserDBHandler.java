@@ -243,7 +243,6 @@ public class UserDBHandler extends SQLiteOpenHelper {
                     +  " && " + cursor.getDouble(2));
             locationHolder = new LocationHolder(loc);
             cursor.close();
-
         }
         return locationHolder;
     }
@@ -259,9 +258,6 @@ public class UserDBHandler extends SQLiteOpenHelper {
                 + TABLE_SYMPTOMS + " ORDER BY "
                 + KEY_ID + " DESC LIMIT 1";
         Cursor cursor = db.rawQuery(QUERY, null);
-
-        //String symptoms = "";
-        //Integer date = 0;
 
         if (cursor != null){
             if (cursor.moveToFirst()){
