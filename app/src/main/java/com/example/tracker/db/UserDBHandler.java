@@ -8,10 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.util.Log;
 
+import androidx.core.content.ContextCompat;
+
 import com.apollographql.apollo.api.Error;
 import com.example.tracker.UsersQuery;
 import com.example.tracker.utils.LatLng;
 import com.example.tracker.utils.LocationHolder;
+import com.example.tracker.utils.UserDBBluetoothHelper;
 import com.example.tracker.utils.UserDBHelper;
 import com.example.tracker.utils.UserDBSymptoms;
 
@@ -30,6 +33,7 @@ public class UserDBHandler extends SQLiteOpenHelper {
     public static final String TABLE_USERS = "userProfile";
     public static final String TABLE_LOCATIONS = "locations";
     public static final String TABLE_SYMPTOMS = "symptoms";
+    public static final String TABLE_BLUETOOTH = "bluetooth";
 
     //----------------------------------------------------------------------------------------------Common column names
     private static final String KEY_ID = "id";
@@ -45,6 +49,15 @@ public class UserDBHandler extends SQLiteOpenHelper {
 
     //----------------------------------------------------------------------------------------------Symptoms columns names
     private static final String KEY_SYMPTOMS = "symptoms";
+
+    //----------------------------------------------------------------------------------------------Bluetooth Column names
+    private static final String KEY_MCADDRESS = "mcaddress";
+    private static final String KEY_DISTANCE = "distance";
+
+    //----------------------------------------------------------------------------------------------Manual Contact
+    private static final String KEY_NAME = "name";
+    private static final String KEY_NUMBER = "number";
+    private static final String KEY_DATE = "date";
 
 
     public UserDBHandler(Context context) {
@@ -80,6 +93,14 @@ public class UserDBHandler extends SQLiteOpenHelper {
                 + KEY_SYMPTOMS + " TEXT,"                            //2
                 + KEY_CREATEDAT + " REAL " + ")";                    //3
         db.execSQL(CREATE_SYMPTOMS_TABLE);
+
+        String CREATE_BLUETOOTH_TABLE = "CREATE TABLE " + TABLE_BLUETOOTH + "("
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"     //0
+                + KEY_UNIQUEID + " TEXT,"                            //1
+                + KEY_MCADDRESS + " TEXT,"                           //2
+                + KEY_DISTANCE + " REAL,"                            //3
+                + KEY_CREATEDAT + " REAL " + ")";                    //4
+        db.execSQL(CREATE_BLUETOOTH_TABLE);
     }
 
     private static final int NOT_AVAILABLE = -10000;
@@ -89,7 +110,9 @@ public class UserDBHandler extends SQLiteOpenHelper {
     private static final String DB_ALTER_TABLE_LOCATIONS_TO_V2 = "ALTER TABLE " + TABLE_LOCATIONS
             + " ADD COLUMN " + KEY_CREATEDAT + " REAL DEFAULT " + NOT_AVAILABLE +";";
     private static final String DB_ALTER_TABLE_SYMPTOMS_TO_V2 = "ALTER TABLE " + TABLE_SYMPTOMS
-            + " ADD COLUMN " + KEY_SYMPTOMS + " TEXT DEFAULT " + NOT_AVAILABLE +";";
+            + " ADD COLUMN " + KEY_CREATEDAT + " REAL DEFAULT " + NOT_AVAILABLE +";";
+    private static final String DB_ALTER_TABLE_BLUETOOTH_TO_V2 = "ALTER TABLE " + TABLE_BLUETOOTH
+            + " ADD COLUMN " + KEY_CREATEDAT + " REAL DEFAULT " + NOT_AVAILABLE +";";
 
     //----------------------------------------------------------------------------------------------Upgrading Database
     @Override
@@ -99,8 +122,9 @@ public class UserDBHandler extends SQLiteOpenHelper {
                 db.execSQL(DB_ALTER_TABLE_USERS_TO_V2);
                 db.execSQL(DB_ALTER_TABLE_LOCATIONS_TO_V2);
                 db.execSQL(DB_ALTER_TABLE_SYMPTOMS_TO_V2);
+                db.execSQL(DB_ALTER_TABLE_BLUETOOTH_TO_V2);
         }
-        Log.w("ConTra", "[#] DatabaseHandler.java - onUpgrade: DB upgraded to version " + newVersion);
+        Log.w("ConTra+", "[#] DatabaseHandler.java - onUpgrade: DB upgraded to version " + newVersion);
     }
 
     //----------------------------------------------------------------------------------------------add location of user
@@ -136,6 +160,38 @@ public class UserDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    //----------------------------------------------------------------------------------------------add symptoms of the user
+    public void addSymptoms (String symptoms, Integer time){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues symptomValues = new ContentValues();
+        symptomValues.put(KEY_SYMPTOMS, symptoms);
+        symptomValues.put(KEY_CREATEDAT, time);
+
+        db.beginTransaction();
+        db.insert(TABLE_SYMPTOMS, null, symptomValues);
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+    }
+
+    //----------------------------------------------------------------------------------------------add bluetooth
+    public void addScannedBluetooth (UserDBBluetoothHelper userDBBluetoothHelper, UserDBHelper userDBHelper){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues bluetoothValues = new ContentValues();
+        bluetoothValues.put(KEY_UNIQUEID, userDBHelper.getUnique_Id());
+        bluetoothValues.put(KEY_MCADDRESS, userDBBluetoothHelper.getMcaddress());
+        bluetoothValues.put(KEY_DISTANCE, userDBBluetoothHelper.getDistance());
+        bluetoothValues.put(KEY_CREATEDAT, userDBBluetoothHelper.getCreatedAd());
+
+        db.beginTransaction();
+        db.insert(TABLE_BLUETOOTH, null, bluetoothValues);
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+    }
+
     //----------------------------------------------------------------------------------------------get single location using id
     public LocationHolder getLocation(long id){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -161,21 +217,6 @@ public class UserDBHandler extends SQLiteOpenHelper {
 
         }
         return locationHolder;
-    }
-
-    //----------------------------------------------------------------------------------------------add symptoms of the user
-    public void addSymptoms (String symptoms, Integer time){
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues symptomValues = new ContentValues();
-        symptomValues.put(KEY_SYMPTOMS, symptoms);
-        symptomValues.put(KEY_CREATEDAT, time);
-
-        db.beginTransaction();
-        db.insert(TABLE_SYMPTOMS, null, symptomValues);
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
     }
 
     //----------------------------------------------------------------------------------------------get list of location using id
@@ -310,7 +351,37 @@ public class UserDBHandler extends SQLiteOpenHelper {
         return false;
     }
 
-    //----------------------------------------------------------------------------------------------delete table
+    //----------------------------------------------------------------------------------------------get Last Scanned Bluetooth
+    public UserDBBluetoothHelper getLastScannedBluetooth() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        UserDBBluetoothHelper userDBBluetoothHelper = null;
+
+        String QUERY = "SELECT "
+                + KEY_ID + ","
+                + KEY_UNIQUEID + ","
+                + KEY_MCADDRESS + ","
+                + KEY_DISTANCE + ","
+                + KEY_CREATEDAT + " FROM "
+                + TABLE_BLUETOOTH + " ORDER BY "
+                + KEY_ID + " DESC LIMIT 1";
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            String mcaddress = cursor.getString(2);
+            Float distance = cursor.getFloat(3);
+            Integer createdAt = cursor.getInt(4);
+            Log.d("DATABASE", "[#] DatabaseHandler.java - BLUETOOTH: " + cursor.getString(2)
+                    + " && " + cursor.getFloat(3));
+            userDBBluetoothHelper = new UserDBBluetoothHelper(mcaddress, distance, createdAt);
+        } else {
+            Log.v("DATABASE", "[#] DatabaseHandler.java - Location Table is Empty");
+            cursor.close();
+        } return userDBBluetoothHelper;
+
+    }
+            //----------------------------------------------------------------------------------------------delete table
     public void deleteAll(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_USERS, null, null);

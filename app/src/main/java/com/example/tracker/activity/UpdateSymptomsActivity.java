@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,15 +15,12 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
-import com.example.tracker.ContactTracing;
 import com.example.tracker.DashboardActivity;
 import com.example.tracker.R;
-import com.example.tracker.UpdateLocationHistoryMutation;
 import com.example.tracker.UpdateSymptomHistoryMutation;
 import com.example.tracker.db.UserDBHandler;
 import com.example.tracker.service.ApolloClient;
@@ -38,12 +34,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class UpdateSymptomsActivity extends AppCompatActivity {
 
     CheckBox severeRespiratoryInfection,pneumonia,fever,diarrhea,bodyAches,tiredness,runnyNose,
-            difficultyInBreathing, lossOfSmell,lossOfTaste;
+            difficultyInBreathing,lossOfSmell,lossOfTaste,dryCough,headache,noSymptoms;
 
     Button button_Submit, button_Back, button_selectDate;
 
@@ -82,6 +77,9 @@ public class UpdateSymptomsActivity extends AppCompatActivity {
         difficultyInBreathing = (CheckBox) findViewById(R.id.symptoms_difficultyinbreathing);
         lossOfSmell = (CheckBox) findViewById(R.id.symptoms_lossofsmell);
         lossOfTaste = (CheckBox) findViewById(R.id.symptoms_lossoftaste);
+        dryCough = (CheckBox) findViewById(R.id.symptoms_drycough);
+        headache = (CheckBox) findViewById(R.id.symptoms_headache);
+        noSymptoms = (CheckBox) findViewById(R.id.symptoms_noSymptoms);
 
         severeRespiratoryInfection.setOnCheckedChangeListener(new onCheckListener());
         pneumonia.setOnCheckedChangeListener(new onCheckListener());
@@ -93,6 +91,9 @@ public class UpdateSymptomsActivity extends AppCompatActivity {
         difficultyInBreathing.setOnCheckedChangeListener(new onCheckListener());
         lossOfSmell.setOnCheckedChangeListener(new onCheckListener());
         lossOfTaste.setOnCheckedChangeListener(new onCheckListener());
+        dryCough.setOnCheckedChangeListener(new onCheckListener());
+        headache.setOnCheckedChangeListener(new onCheckListener());
+        noSymptoms.setOnCheckedChangeListener(new onCheckListener());
 
         button_Submit = findViewById(R.id.symptoms_submit);
         button_Back = findViewById(R.id.symptoms_cancel);

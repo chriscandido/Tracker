@@ -1,6 +1,8 @@
 package com.example.tracker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -17,7 +19,8 @@ import com.example.tracker.activity.UpdateSymptomsActivity;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    ImageButton button_staySafe, button_mapActivity, button_updateSymptoms;
+    CardView cardView_staySafe, cardView_mapActivity, cardView_updateSymptoms;
+    NestedScrollView nestedScrollView;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -25,13 +28,14 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        button_staySafe = findViewById(R.id.protection_btn);
-        button_mapActivity = findViewById(R.id.maps_btn);
-        button_updateSymptoms = findViewById(R.id.symptoms_btn);
+        cardView_staySafe = findViewById(R.id.cardView_protectYourself);
+        cardView_mapActivity = findViewById(R.id.cardView_Visualize);
+        cardView_updateSymptoms = findViewById(R.id.cardView_updateSymptoms);
+        nestedScrollView = findViewById(R.id.nestedScrollView);
 
-        button_staySafe.setOnTouchListener(new onTouch());
-        button_mapActivity.setOnTouchListener(new onTouch());
-        button_updateSymptoms.setOnTouchListener(new onTouch());
+        cardView_staySafe.setOnTouchListener(new onTouch());
+        cardView_mapActivity.setOnTouchListener(new onTouch());
+        cardView_updateSymptoms.setOnTouchListener(new onTouch());
     }
 
     public class onTouch implements View.OnTouchListener{

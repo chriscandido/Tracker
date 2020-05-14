@@ -10,19 +10,22 @@ import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothSocket;
+import android.bluetooth.le.AdvertiseCallback;
+import android.bluetooth.le.AdvertiseData;
+import android.bluetooth.le.AdvertiseSettings;
+import android.bluetooth.le.AdvertisingSet;
+import android.bluetooth.le.AdvertisingSetCallback;
+import android.bluetooth.le.AdvertisingSetParameters;
+import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkInfo;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,31 +33,28 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.ParcelUuid;
 import android.os.Parcelable;
 import android.os.SystemClock;
-import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.core.location.LocationManagerCompat;
 
 import com.example.tracker.MainActivity;
 import com.example.tracker.R;
+import com.example.tracker.activity.BootBroadcastReceiver;
 import com.example.tracker.db.UserDBHandler;
 import com.example.tracker.utils.Constants;
 import com.example.tracker.utils.LocationHolder;
 import com.example.tracker.utils.StringToInt;
 import com.example.tracker.utils.UserDBHelper;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.common.internal.GoogleApiAvailabilityCache;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -63,13 +63,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.AdvertisingOptions;
-import com.google.android.gms.nearby.connection.AppIdentifier;
-import com.google.android.gms.nearby.connection.AppMetadata;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
 import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
 import com.google.android.gms.nearby.connection.ConnectionResolution;
 import com.google.android.gms.nearby.connection.Connections;
-import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
 import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
 import com.google.android.gms.nearby.connection.DiscoveryOptions;
 import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
@@ -78,32 +75,25 @@ import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.mapbox.android.telemetry.AppUserTurnstile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.sql.Connection;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesProvider;
-import io.realm.Realm;
-
-import static android.media.session.PlaybackState.STATE_CONNECTING;
 import static android.media.session.PlaybackState.STATE_NONE;
 
-public class LocationService extends Service implements
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
-
-    private LocationGooglePlayServicesProvider provider;
+public class LocationService extends Service {
 
     public static boolean isServiceRunning = false;
     public static final int LOCATION_PERMISSION_ID = 1001;
@@ -136,6 +126,7 @@ public class LocationService extends Service implements
     BluetoothManager bluetoothManager;
     ScanCallback scanCallback;
     BluetoothLeScanner bluetoothLeScanner;
+    AdvertiseSettings settings;
     Timer timer;public static int state = STATE_NONE;
 
     //Google Nearby API
@@ -147,25 +138,13 @@ public class LocationService extends Service implements
         this.context = context;
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        startAdvertising();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-    }
-
     public class LocalBinder extends Binder {
         public LocationService getServiceInstance(){
             return LocationService.this;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onCreate(){
         super.onCreate();
 
@@ -181,23 +160,10 @@ public class LocationService extends Service implements
         mNotificationManager = (NotificationManager) getSystemService((NOTIFICATION_SERVICE));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            //CharSequence name = getString(R.string.app_name);
-            //String CHANNEL_NAME = "Location Services";
-            //NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
-            //mNotificationManager.createNotificationChannel(notificationChannel);
-            getNotification();
+            startForeground(0, getNotification());
         }
 
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Nearby.CONNECTIONS_API)
-                .build();
-
-        if (googleApiClient.isConnected()){
-            startAdvertising();
-            startDiscovery();
-        }
+        advertising();
     }
 
     @Nullable
@@ -219,9 +185,9 @@ public class LocationService extends Service implements
         super.onStartCommand(intent, flags, startId);
         if (intent != null){
             //startLocationListener();
+            advertising();
             startTrackingCallback();
             sendBluetoothRequest();
-            googleApiClient.connect();
             Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
         } else  {
             stopService();
@@ -229,147 +195,49 @@ public class LocationService extends Service implements
         return START_STICKY;
     }
 
-    private void startAdvertising(){
-        Nearby.Connections.startAdvertising(
-                googleApiClient,
-                userDBHandler.getKeyUniqueid(),
-                Constants.SERVICE_ID,
-                mConnectionLifecycleCallback,
-                new AdvertisingOptions(Constants.STRATEGY)
-        ).setResultCallback(new ResultCallback<Connections.StartAdvertisingResult>() {
-            @Override
-            public void onResult(@NonNull Connections.StartAdvertisingResult startAdvertisingResult) {
-                if (startAdvertisingResult.getStatus().isSuccess()){
-                    Log.i("NEARBY SERVICES", "[#] LocationServices.java - Advertising Endpoint");
-                } else {
-                    Log.i("NEARBY SERVICES", "[#] LocationServices.java - Unable to Start Advertising");
-                }
-            }
-        });
-    }
-
-    private final ConnectionLifecycleCallback mConnectionLifecycleCallback = new ConnectionLifecycleCallback() {
-        @Override
-        public void onConnectionInitiated(@NonNull String endPointId, @NonNull ConnectionInfo connectionInfo) {
-            Log.i("NEARBY SERVICES", "[#] LocationServices.java - Connection Initiated: " + endPointId);
-            //establishConnection(endPointId);
-            Nearby.getConnectionsClient(getApplicationContext()).acceptConnection(endPointId, payloadCallback);
-        }
-
-        @Override
-        public void onConnectionResult(@NonNull String endPointId, @NonNull ConnectionResolution connectionResolution) {
-            //markStudentAsPresent(endPointId);
-            sendPayload(endPointId);
-        }
-
-        @Override
-        public void onDisconnected(@NonNull String endPointId) {
-            Log.i("NEARBY SERVICES", "[#] LocationServices.java - Disconnected: " + endPointId);
-        }
-    };
-
-    private void sendPayload(String endPointId){
-        Payload payload = Payload.fromBytes(userDBHandler.getKeyUniqueid().getBytes());
-        Nearby.getConnectionsClient(getApplicationContext()).sendPayload(endPointId, payload)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-            }
-        });
-    }
-
-    private PayloadCallback payloadCallback = new PayloadCallback() {
-        @Override
-        public void onPayloadReceived(@NonNull String endPointId, @NonNull Payload payload) {
-            byte[] receivedBytes = payload.asBytes();
-            assert receivedBytes != null;
-            Log.i("NEARBY SERVICES", "[#] LocationServices.java - Payload: " + receivedBytes.toString());
-        }
-        @Override
-        public void onPayloadTransferUpdate(@NonNull String endPointId, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
-        }
-    };
-
-    private void startDiscovery(){
-        Nearby.Connections.startDiscovery(
-                googleApiClient,
-                Constants.SERVICE_ID,
-                mEndpointDiscoveryCallback,
-                new DiscoveryOptions(Constants.STRATEGY)
-        ).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        if (status.isSuccess()){
-                            Log.i("NEARBY SERVICES", "[#] LocationServices.java - Looking for Advertisers!");
-                        } else {
-                            Log.i("NEARBY SERVICES", "[#] LocationServices.java - Unable to Start Discovery");
-                        }
-                    }
-                }
-        );
-    }
-
-    private final EndpointDiscoveryCallback mEndpointDiscoveryCallback = new EndpointDiscoveryCallback() {
-        @Override
-        public void onEndpointFound(@NonNull String endPointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
-            Nearby.getConnectionsClient(getApplicationContext()).requestConnection(userDBHandler.getKeyUniqueid(), endPointId,
-                    new ConnectionLifecycleCallback() {
-                        @Override
-                        public void onConnectionInitiated(@NonNull String endPointId, @NonNull ConnectionInfo connectionInfo) {
-                            Nearby.getConnectionsClient(getApplicationContext()).acceptConnection(endPointId, payloadCallback);
-                        }
-
-                        @Override
-                        public void onConnectionResult(@NonNull String endPointId, @NonNull ConnectionResolution connectionResolution) {
-                        }
-
-                        @Override
-                        public void onDisconnected(@NonNull String endPointId) {
-                        }
-                    });
-        }
-        @Override
-        public void onEndpointLost(@NonNull String endPointId) {
-        }
-    };
-
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     private Notification getNotification() {
+
+        isServiceRunning = true;
+
         //String CHANNEL_ID = "Contra";
-        String CONTENT_TEXT = "Tracker is running";
-        String CHANNEL_NAME = "Location Services";
+        String CONTENT_TEXT = "ConTra+ is currently storing your location and bluetooth connection";
+        String CHANNEL_NAME = "LocationServices";
         String CHANNEL_ID = getString(R.string.app_name);
 
         Intent intent = new Intent(this, LocationService.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification notification;
 
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
 
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        assert notificationManager != null;
         notificationManager.createNotificationChannel(channel);
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification.Builder builder = new Notification.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.appicon)
                     .setContentTitle(getString(R.string.app_name))
                     .setContentText(CONTENT_TEXT)
+                    .setContentIntent(pendingIntent)
+                    .setOngoing(true)
                     .setAutoCancel(true);
             notification = builder.build();
         } else {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.appicon)
                     .setContentTitle(getString(R.string.app_name))
                     .setContentText(CONTENT_TEXT)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(pendingIntent)
                     .setAutoCancel(true);
 
             notification = builder.build();
         }
+        notificationManager.notify(0, notification);
         return notification;
     }
 
@@ -387,7 +255,7 @@ public class LocationService extends Service implements
     private LocationRequest setupLocationRequest(){
         LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(60 * 1000);
-        locationRequest.setFastestInterval(10 * 1000);
+        locationRequest.setFastestInterval(5 * 1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         return locationRequest;
     }
@@ -424,6 +292,7 @@ public class LocationService extends Service implements
                     long time = location.getTime();
                     String strLat = String.valueOf(lat);
                     String strLon = String.valueOf(lon);
+                    String dTime = String.valueOf(time);
 
                     LocationHolder locationHolder = new LocationHolder(location);
                     UserDBHelper userDBHelper = new UserDBHelper(userDBHandler.getKeyUniqueid());
@@ -456,59 +325,6 @@ public class LocationService extends Service implements
         return locationCallback;
     }
 
-    /*public void startLocationListener() {
-
-        if (isServiceRunning) return;
-        isServiceRunning = true;
-
-        LocationParams.Builder builder = new LocationParams.Builder()
-                .setAccuracy(LocationAccuracy.HIGH)
-                .setDistance(1)
-                .setInterval(1000);
-
-        SmartLocation.with(this)
-                .location()
-                .config(LocationParams.BEST_EFFORT)
-                .continuous()
-                .config(builder.build())
-                .start(new OnLocationUpdatedListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void onLocationUpdated(Location location) {
-                        double lat = location.getLatitude();
-                        double lon = location.getLongitude();
-                        long time = location.getTime();
-                        String strLat = String.valueOf(lat);
-                        String strLon = String.valueOf(lon);
-
-                        LocationHolder locationHolder = new LocationHolder(location);
-                        UserDBHelper userDBHelper = new UserDBHelper(userDBHandler.getKeyUniqueid());
-                        userDBHandler.addLocation(locationHolder, userDBHelper);
-                        int lastId = userDBHandler.getLastId();
-
-                        final String uniqueId = userDBHandler.getKeyUniqueid();
-                        double latitude = userDBHandler.getLocation(lastId).getLatitude();
-                        double longitude = userDBHandler.getLocation(lastId).getLongitude();
-                        //long dateTime = userDBHandler.getLocation(lastId).getTime();
-
-                        Log.v("Service", "[#] LocationService.java - LOCATION: " + latitude + " && "
-                                + longitude + " and " + " UNIQUE ID: " + uniqueId);
-
-                        StringToInt stringToInt = new StringToInt();
-                        Integer dateTime = stringToInt.convertToInt(time);
-
-                        intent.putExtra("Latitude", lat);
-                        intent.putExtra("Longitude", lon);
-                        intent.putExtra("dateTime", dateTime);
-                        intent.putExtra("Uid", uniqueId);
-                        sendBroadcast(intent);
-
-                        ApolloService.startActionPostLocation(getApplicationContext(), latitude, longitude, dateTime, uniqueId);
-
-                    }
-                });
-    }*/
-
     //----------------------------------------------------------------------------------------------Bluetooth Logging
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initializeBluetooth(){
@@ -532,9 +348,17 @@ public class LocationService extends Service implements
     public void sendBluetoothRequest(){
         initializeBluetooth();
 
-        final ScanSettings.Builder builder = new ScanSettings.Builder();
-        builder.setScanMode(ScanSettings.SCAN_MODE_LOW_POWER);
-        builder.setReportDelay(1000);
+        final List<ScanFilter> filter = new ArrayList<>();
+
+        final ScanFilter scanFilter = new ScanFilter.Builder()
+                .setServiceUuid(new ParcelUuid(UUID.fromString(userDBHandler.getKeyUniqueid())))
+                .build();
+        filter.add(scanFilter);
+
+        final ScanSettings settings = new ScanSettings.Builder()
+                .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
+                .setReportDelay(1000)
+                .build();
 
         timer = new Timer();
         TimerTask timerTask = new TimerTask() {
@@ -546,12 +370,12 @@ public class LocationService extends Service implements
                 if (scanCallback == null){
                     scanCallback = initializeCallback();
                 }
-                bluetoothLeScanner.startScan(null, builder.build(), scanCallback);
+                bluetoothLeScanner.startScan(null, settings, scanCallback);
             }
         };
         //TODO edit to 30mins at least
-        long TIME_DELAY = 10000;
-        long TIME_PERIOD = 10000;
+        long TIME_DELAY = 1000;
+        long TIME_PERIOD = 2*60*1000;
         timer.schedule(timerTask, TIME_DELAY, TIME_PERIOD);
     }
 
@@ -569,9 +393,9 @@ public class LocationService extends Service implements
                 int txPower = result.getTxPower();
                 String time = getBluetoothTime(result.getTimestampNanos());
                 String address = device.getAddress();
-                Parcelable[] uuids = intent.getParcelableArrayExtra(device.EXTRA_UUID);
+                Parcelable[] uuids = intent.getParcelableArrayExtra(device.EXTRA_DEVICE);
 
-                Log.d("SERVICE BLUETOOTH", "[#]LocationServices.java - BLUETOOTH: "
+                Log.d("SCAN BLUETOOTH", "[#]LocationServices.java - BLUETOOTH: "
                         + uuids
                         + " && " + address
                         + " && " + rssi
@@ -586,19 +410,15 @@ public class LocationService extends Service implements
                 super.onBatchScanResults(results);
                 //Log.d("Service", "Bluetooth captured data!");
                 for (ScanResult result:results){
-                    BluetoothDevice device = result.getDevice();
 
+                    BluetoothDevice device = result.getDevice();
                     int rssi = result.getRssi();
                     int txPower = result.getTxPower();
-                    String name = device.getName();
                     String time = getBluetoothTime(result.getTimestampNanos());
                     String address = device.getAddress();
-                    Parcelable[] uuids = device.getUuids();
                     Double d = Math.pow(10,(txPower - rssi)/(10*2.25));
 
-
-                    Log.d("SERVICE BLUETOOTH", "[#] LocationServices.java - BLUETOOTH: "
-                            + uuids
+                    Log.d("BATCHSCAN BLUETOOTH", "[#] LocationServices.java - BLUETOOTH: "
                             + " && " + address
                             + " && " + rssi
                             + " && " + txPower
@@ -607,12 +427,60 @@ public class LocationService extends Service implements
                 }
                 noOfBluetoothDevices = results.size();
             }
+
             @Override
             public void onScanFailed(int errorCode) {
                 super.onScanFailed(errorCode);
             }
         };
         return scanCallback;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void advertising (){
+        Log.v("BLUETOOTH ADVERTISE", "[#] LocationServices.java - BLUETOOTH ADVERTISEMENT STARTED!");
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        final AdvertisingSet[] currentAdvertisingSet = new AdvertisingSet[1];
+        final BluetoothLeAdvertiser advertiser = bluetoothAdapter.getBluetoothLeAdvertiser();
+
+        // Check if all features are supported
+        if (!bluetoothAdapter.isLe2MPhySupported()) {
+            Log.e("BLUETOOTH ADVERTISE", "2M PHY not supported!");
+            return;
+        }
+        if (!bluetoothAdapter.isLeExtendedAdvertisingSupported()) {
+            Log.e("BLUETOOTH ADVERTISE", "LE Extended Advertising not supported!");
+            return;
+        }
+
+        settings = (new AdvertiseSettings.Builder())
+                .setConnectable(false)
+                .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
+                .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_POWER)
+                .build();
+
+        ParcelUuid parcelUuid = new ParcelUuid(UUID.fromString(userDBHandler.getKeyUniqueid()));
+        AdvertiseData data = (new AdvertiseData.Builder())
+                .setIncludeDeviceName(false)
+                .addServiceUuid(parcelUuid)
+                .build();
+
+        Log.i("BLUETOOTH ADVERTISE", String.valueOf(data));
+
+        AdvertiseCallback callback = new AdvertiseCallback() {
+            @Override
+            public void onStartSuccess(AdvertiseSettings settingsInEffect) {
+                super.onStartSuccess(settingsInEffect);
+                Log.v("BLUETOOTH ADVERTISING", settingsInEffect.toString());
+            }
+
+            @Override
+            public void onStartFailure(int errorCode) {
+                super.onStartFailure(errorCode);
+            }
+        };
+        advertiser.startAdvertising(settings, data, callback);
+        //currentAdvertisingSet[0].enableAdvertising(true, 0, 0);
     }
 
     private String getBluetoothTime(long time){
@@ -636,9 +504,6 @@ public class LocationService extends Service implements
         }
     }
 
-    //----------------------------------------------------------------------------------------------Nearby Connection
-
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onDestroy() {
@@ -658,6 +523,7 @@ public class LocationService extends Service implements
         isServiceRunning = false;
         Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
     }
+
 
     public boolean serviceIsRunningInForeground(Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(

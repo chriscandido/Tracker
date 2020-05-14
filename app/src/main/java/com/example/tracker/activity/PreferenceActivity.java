@@ -3,7 +3,6 @@ package com.example.tracker.activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import com.example.tracker.utils.Constants;
 
 public class PreferenceActivity {

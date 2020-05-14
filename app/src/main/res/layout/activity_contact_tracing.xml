@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactTracing">
+    tools:context=".activity.ContactTracing">
 
     <TextView
         android:id="@+id/update_recent_contact_text"

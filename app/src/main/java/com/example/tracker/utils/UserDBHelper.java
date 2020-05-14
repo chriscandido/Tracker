@@ -9,7 +9,7 @@ import com.example.tracker.db.UserDBHandler;
 public class UserDBHelper {
 
 
-    String unique_Id;
+    private String unique_Id;
 
     public UserDBHelper(String unique_Id){
         this.unique_Id = unique_Id;

@@ -1,22 +1,19 @@
 package com.example.tracker;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.AnimationDrawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -34,8 +31,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.maps.model.Dash;
-import com.google.android.material.snackbar.Snackbar;
+import com.skyfishjy.library.RippleBackground;
 
 import static io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesProvider.REQUEST_CHECK_SETTINGS;
 
@@ -53,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button button_Start, button_Stop;
     ImageButton button_Dashboard;
+    RippleBackground rippleBackground;
 
     Toolbar toolbar;
 
@@ -61,16 +58,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ConstraintLayout constraintLayout = findViewById(R.id.frameLayout);
-        AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
-
-        animationDrawable.setEnterFadeDuration(5000);
-        animationDrawable.setExitFadeDuration(2000);
-
-        animationDrawable.start();
-
         button_Start = findViewById(R.id.button_startService);
         button_Stop = findViewById(R.id.button_stopService);
+        rippleBackground = (RippleBackground) findViewById(R.id.content);
         //button_Dashboard = findViewById(R.id.image_Setting);
 
         button_Start.setOnClickListener(new onClick());
@@ -102,12 +92,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            locationService = null;
-            mBound = false;
         }
     };*/
 
     public class onClick implements View.OnClickListener{
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onClick(View view){
             switch (view.getId()){
@@ -115,11 +104,13 @@ public class MainActivity extends AppCompatActivity {
                     button_Start.setVisibility(View.GONE);
                     button_Stop.setVisibility(View.VISIBLE);
                     startService();
+                    rippleBackground.startRippleAnimation();
                     break;
                 case R.id.button_stopService:
                     button_Start.setVisibility(View.VISIBLE);
                     button_Stop.setVisibility(View.GONE);
                     stopService();
+                    rippleBackground.stopRippleAnimation();
                     break;
             }
         }
@@ -191,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void startService(){
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_ID);
@@ -207,12 +199,12 @@ public class MainActivity extends AppCompatActivity {
         }
         // Bind to the service. If the service is in foreground mode, this signals to the service
         // that since this activity is in the foreground, the service can exit foreground mode.
-        /*bindService(new Intent(this, LocationService.class), serviceConnection,
-                Context.BIND_AUTO_CREATE);*/
+        //bindService(new Intent(this, LocationService.class), serviceConnection,
+        //        Context.BIND_AUTO_CREATE);
+        rippleBackground.startRippleAnimation();
     }
 
     public void stopService(){
-        //userDBHandler.deleteAll();
         stopService(new Intent(getBaseContext(), LocationService.class));
     }
 

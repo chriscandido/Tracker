@@ -1,149 +1,361 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/dashboard"
-    tools:context=".DashboardActivity">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".DashboardActivity"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:ignore="PrivateResource">
 
-    <ImageView
-        android:id="@+id/image_Logo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/appicon" />
+    <!--Main Content-->
+    <!--Application Title-->
+    <LinearLayout
+        android:id="@+id/relativelayout_Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/text_Contra"
-        android:layout_width="wrap_content"
+        <!-- Application Logo-->
+        <ImageView
+            android:id="@+id/image_Logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/appicon"
+            android:layout_alignLeft="@id/text_Contra"/>
+
+        <!--Application Description-->
+        <RelativeLayout
+            android:id="@+id/text_Contra"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/AppTitle"
+                android:textColor="@color/colorSecondary"
+                android:textSize="25sp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="start"
+                android:text="@string/text_AppDescription"
+                android:textColor="@color/colorSecondary"
+                android:textSize="12sp"
+                android:layout_below="@+id/textTitle"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- CardView Options-->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ConTra +"
-        android:textSize="30sp"
-        android:fontFamily="@font/montserrat_bold"
-        android:textColor="#00838f"
-        android:textAlignment="gravity"
-        app:layout_constraintBottom_toTopOf="@id/text_Contra2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_Logo"/>
-
-    <TextView
-        android:id="@+id/text_Contra2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="@string/text_AppDescription"
-        android:textSize="10sp"
-        android:fontFamily="@font/montserrat_bold"
-        android:textColor="#00838f"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/text_Contra"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/protection_btn"/>
-
-    <ImageButton
-        android:id="@+id/protection_btn"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/button_roundcorner"
-        android:clickable="true"
-        android:onClick="goToStaySafe"
-        android:scaleType="fitStart"
-        android:adjustViewBounds="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_Contra2"
-        app:srcCompat="@drawable/protection_btn"
-        android:contentDescription="@string/todo"
-        android:focusable="true" />
-
-    <ImageButton
-        android:id="@+id/maps_btn"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/button_roundcorner"
-        android:scaleType="fitStart"
-        android:adjustViewBounds="true"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="goToMapActivity"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/protection_btn"
-        app:srcCompat="@drawable/maps_btn"
-        android:contentDescription="@string/todo" />
-
-    <ImageButton
-        android:id="@+id/symptoms_btn"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/button_roundcorner"
-        android:scaleType="fitStart"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="gotToUpdateSymptoms"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/maps_btn"
-        app:srcCompat="@drawable/symptoms_btn"
-        android:contentDescription="@string/todo" />
-
-    <ImageButton
-        android:id="@+id/contact_tracing_btn"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/button_roundcorner"
-        android:scaleType="fitStart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/symptoms_btn"
-        app:srcCompat="@drawable/contact_tracing_btn"
-        android:contentDescription="@string/todo" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/dashboard_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="5dp"
-        android:text="Back"
-        android:textColor="#00838f"
-        android:fontFamily="@font/montserrat"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:background="@android:color/transparent"
-        android:onClick="goToMain"
-        android:clickable="true"
-        app:strokeColor="#00838f"
-        app:strokeWidth="1dp"
-        app:cornerRadius="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+        android:layout_marginLeft="10dp"
+        android:fillViewport="true"
+        android:layout_below="@+id/relativelayout_Title">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--Protect Yourself -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_protectYourself"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:clickable="true"
+                android:onClick="goToStaySafe"
+                android:focusable="true"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="100dp"
+                    android:background="@color/colorPrimaryDarker"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textViewProtectYourself"
+                        android:text="Protect Yourself"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_alignParentTop="true"
+                        style="@style/viewParent.headerText.HomeCardTitle" />
+
+                    <TextView
+                        android:text="Tips and Reminders on how \nto stay safe during pandemic"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_below="@id/textViewProtectYourself"
+                        style="@style/viewParent.headerText.homeCardContent" />
+
+                    <ImageView
+                        android:id="@+id/imageMap"
+                        android:maxHeight="90dp"
+                        android:src="@drawable/icons_logo_buttons_protection"
+                        android:layout_alignRight="@id/textViewProtectYourself"
+                        style="@style/homeCardImage"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!--Maps -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_Visualize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:clickable="true"
+                android:onClick="goToMapActivity"
+                android:focusable="true"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="100dp"
+                    android:background="@color/colorRedOrange"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textViewMapActivity"
+                        android:text="Visualize"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_alignParentTop="true"
+                        style="@style/viewParent.headerText.HomeCardTitle" />
+
+                    <TextView
+                        android:text="Map your journey and access \nlocation of different medical \nfacilities"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_below="@id/textViewMapActivity"
+                        style="@style/viewParent.headerText.homeCardContent" />
+
+                    <ImageView
+                        android:id="@+id/imageProtect"
+                        android:maxHeight="90dp"
+                        android:src="@drawable/icons_logo_buttons_map"
+                        android:layout_alignRight="@id/textViewMapActivity"
+                        style="@style/homeCardImage"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!--Update Symptoms -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_updateSymptoms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:clickable="true"
+                android:onClick="gotToUpdateSymptoms"
+                android:focusable="true"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="100dp"
+                    android:background="@color/colorNegative"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textViewSymptoms"
+                        android:text="Symptoms"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_alignParentTop="true"
+                        style="@style/viewParent.headerText.HomeCardTitle" />
+
+                    <TextView
+                        android:text="Update symptoms of possible \nCOVID-19 infection"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_below="@id/textViewSymptoms"
+                        style="@style/viewParent.headerText.homeCardContent" />
+
+                    <ImageView
+                        android:id="@+id/imageSymptoms"
+                        android:maxHeight="90dp"
+                        android:src="@drawable/icons_logo_buttons_symtpoms"
+                        android:layout_alignRight="@id/textViewSymptoms"
+                        style="@style/homeCardImage"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!--Manual Contact Tracing -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="100dp"
+                    android:background="@color/colorNeutral"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textViewContactTracing"
+                        android:text="Contact Tracing"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_alignParentTop="true"
+                        style="@style/viewParent.headerText.HomeCardTitle" />
+
+                    <TextView
+                        android:text="Manually report possible contacts \nduring travel or movement"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_below="@id/textViewContactTracing"
+                        style="@style/viewParent.headerText.homeCardContent" />
+
+                    <ImageView
+                        android:id="@+id/imageContractTracing"
+                        android:maxHeight="90dp"
+                        android:src="@drawable/icons_logo_buttons_contacttracing"
+                        android:layout_alignRight="@id/textViewContactTracing"
+                        style="@style/homeCardImage"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!--Pulse -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="100dp"
+                    android:background="@color/colorContrastAccent"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textViewCQP"
+                        android:text="Pulse"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_alignParentTop="true"
+                        style="@style/viewParent.headerText.HomeCardTitle" />
+
+                    <TextView
+                        android:text="What's your opinion about the \ncommunity quarantine? Take this \nsurvey and express your thought"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_below="@id/textViewCQP"
+                        style="@style/viewParent.headerText.homeCardContent" />
+
+                    <ImageView
+                        android:id="@+id/imagePulse"
+                        android:maxHeight="90dp"
+                        android:src="@drawable/icons_logo_buttons_homequarantine"
+                        android:layout_alignRight="@id/textViewCQP"
+                        style="@style/homeCardImage"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!--Pulse -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="100dp"
+                    android:background="@color/colorSlightlyNegative"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textViewWebsite"
+                        android:text="Information"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_alignParentTop="true"
+                        style="@style/viewParent.headerText.HomeCardTitle" />
+
+                    <TextView
+                        android:text="Get additional information about \nthe current situation of COVID-19\n pandemic"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_below="@id/textViewWebsite"
+                        style="@style/viewParent.headerText.homeCardContent" />
+
+                    <ImageView
+                        android:id="@+id/imageWebsite"
+                        android:maxHeight="90dp"
+                        android:src="@drawable/icons_logo_buttons_website"
+                        android:layout_alignRight="@id/textViewWebsite"
+                        style="@style/homeCardImage"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- About Button-->
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="About"
+                android:textSize="15sp"
+                android:fontFamily="@font/montserrat"
+                app:cornerRadius="5dp"
+                app:backgroundTint="@android:color/holo_green_dark"/>
+
+            <!--Legal Button-->
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Legal and Privacy"
+                android:textSize="15sp"
+                android:fontFamily="@font/montserrat"
+                app:cornerRadius="5dp"
+                app:backgroundTint="@android:color/holo_blue_dark"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

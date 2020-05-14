@@ -36,7 +36,11 @@ public class ApolloService extends IntentService {
         super("ApolloService");
     }
 
-    public static void startActionPostLocation(Context context, Double lat, Double lon, Integer time, String uid){
+    public static void startActionPostLocation(Context context,
+                                               Double lat,
+                                               Double lon,
+                                               Integer time,
+                                               String uid){
         Intent intent = new Intent(context, ApolloService.class);
         intent.setAction(ACTION_POST_LOCATION);
         intent.putExtra(LAT, lat);

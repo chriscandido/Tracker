@@ -6,46 +6,100 @@
     android:layout_height="match_parent"
     tools:context=".activity.LoginActivity">
 
-    <ImageView
-        android:id="@+id/image_contraIcon"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        android:src="@drawable/appicon"
-        android:layout_marginTop="50dp"
+    <!--Main Content-->
+    <!--Title-->
+    <LinearLayout
+        android:id="@+id/linearlayout_titlePage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/text_dateOfBirth"
-        android:contentDescription="TODO" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/text_dateOfBirth">
 
+        <ImageView
+            android:id="@+id/image_contraIcon"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/appicon"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="15dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/textView_Contra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textSize="30sp"
+                android:fontFamily="@font/montserrat_bold"
+                android:textColor="@color/colorSecondary"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/textView_Motto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Your Protection Against"
+                android:textSize="12sp"
+                android:textColor="@color/colorNeutral"
+                android:fontFamily="@font/montserrat"
+                android:layout_below="@+id/textView_Contra"
+                android:layout_marginTop="40dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="COVID-19"
+                android:textColor="@color/colorNegative"
+                android:textSize="20sp"
+                android:fontFamily="@font/montserrat"
+                android:layout_below="@+id/textView_Motto"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!--Mobile Phone Number Input-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_dateOfBirth"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/phone_number"
         android:layout_marginBottom="20dp"
-        android:onClick="gotoMainActivity"
-        android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@+id/button_login"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:gravity="center"
+        android:hint="@string/phone_number"
+        app:helperText="(Ex: +639454728499)"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_contraIcon"
+        app:layout_constraintBottom_toBottomOf="parent"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!--Subscribe Button-->
     <Button
         android:id="@+id/button_subscribe"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
         android:text="Subscribe"
         android:textColor="#fff"
-        android:backgroundTint="#ff6f69"
+        android:backgroundTint="@color/colorSecondary"
         android:paddingBottom="10dp"
-        app:cornerRadius="100dp"
+        app:cornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_dateOfBirth" />

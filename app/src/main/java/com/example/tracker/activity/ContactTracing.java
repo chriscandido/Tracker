@@ -1,4 +1,4 @@
-package com.example.tracker;
+package com.example.tracker.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+
+import com.example.tracker.R;
 
 import java.util.Calendar;
 

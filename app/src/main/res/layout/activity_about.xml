@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.EulaActivity">
+
+    <TextView
+        android:id="@+id/agreement_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Terms of Use"
+        android:textColor="@color/colorPrimaryDarker"
+        android:fontFamily="@font/montserrat_bold"
+        android:background="@color/colorWhite"
+        android:paddingTop="30dp"
+        android:paddingBottom="15dp"
+        android:textSize="22sp"
+        android:textAlignment="center"
+        android:gravity="center_horizontal" />
+
+    <ScrollView
+        android:id="@+id/agreement_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/agreement_buttons"
+        android:layout_below="@+id/agreement_title"
+        android:layout_marginBottom="5dp"
+        android:paddingBottom="25dp"
+        android:background="@color/colorBackgroundGray">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="45dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/date"
+                android:textColor="@color/colorNeutral"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/heading"
+                android:textSize="10sp"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title01"
+                android:textSize="15sp"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/body01"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title02"
+                android:textSize="15sp"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/body02"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title03"
+                android:textSize="15sp"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/body03"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title04"
+                android:textSize="15sp"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/body04"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title05"
+                android:textSize="15sp"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/body05"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title06"
+                android:textSize="15sp"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/body06"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title07"
+                android:textSize="15sp"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/body07"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title08"
+                android:textSize="15sp"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/body08"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title09"
+                android:textSize="15sp"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title10"
+                android:textSize="15sp"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/body10"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title11"
+                android:textSize="15sp"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/body11"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title12"
+                android:textSize="15sp"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/body12"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title13"
+                android:textSize="15sp"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/body13"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/agreement_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <CheckBox
+            android:id="@+id/checkbox_agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I AGREE WITH THE TERMS AND CONDITION"
+            android:textSize="12sp"
+            android:fontFamily="@font/montserrat"
+            android:layout_marginLeft="30dp"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/button_agreement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:backgroundTint="@color/colorSecondary"
+            android:text="Agree and Continue"
+            android:textColor="@color/colorWhite"
+            android:onClick="goToLogin"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_below="@+id/checkbox_agreement"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

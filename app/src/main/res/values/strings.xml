@@ -1,8 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Tracker</string>
+    <string name="todo">TODO</string>
+
+    <!--Essentials-->
+    <string name="AppTitle">ConTra +</string>
+    <string name="app_name">ConTra +</string>
+    <string name="text_AppDescription">A Contact Tracing Application for COVID-19 Pandemic</string>
+
+    <!--Home Page-->
+    <string name="start_logging">START LOGGING</string>
+    <string name="stop_logging">STOP LOGGING</string>
+    <string name="menu">MENU</string>
+
+    <!--Login Page-->
     <string name="login">Login</string>
     <string name="date_of_birth">Date of Birth</string>
-    <string name="phone_number">Phone Number</string>
-    <string name="todo">TODO</string>
-    <string name="text_AppDescription">A Contact Tracing Application for COVID-19 Pandemic</string>
+    <string name="phone_number">Mobile Number</string>
+
 </resources>

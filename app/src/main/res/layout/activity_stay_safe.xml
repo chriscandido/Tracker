@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.StaySafeActivity">
-
+    <!--Main Content-->
+    <!-- Title -->
     <TextView
         android:id="@+id/instrtuctions_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="How to Stay Safe"
-        android:textColor="#00838f"
+        android:textColor="@color/colorSecondary"
         android:background="@android:color/transparent"
         android:paddingTop="35dp"
         android:paddingBottom="15dp"
@@ -20,6 +21,7 @@
         android:fontFamily="@font/montserrat_bold"
         android:gravity="center_horizontal" />
 
+    <!-- Body -->
     <ScrollView
         android:id="@+id/instrtuctions_scrollview"
         android:layout_width="match_parent"
@@ -56,6 +58,7 @@
                 android:layout_marginRight="30dp"
                 android:fontFamily="@font/montserrat"
                 android:gravity="fill_horizontal"
+                android:textColor="@color/colorPrimaryDarker"
                 android:text="\t\tRight now, we are experiencing a pandemic. The Sars-CoV-2 virus that cause the new corona virus disease - 2019 or covid-19 is spreading rapidly.To keep you and your family safe, please observe the following.\n" />
 
             <me.biubiubiu.justifytext.library.JustifyTextView
@@ -65,6 +68,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:fontFamily="@font/montserrat"
+                android:textColor="@color/colorPrimaryDarker"
                 android:text="Your hands touch many surfaces throughout the day and this makes your hands a likely place for the virus.To decrease the chances of spread of the virus and catching it yourself, practice washing your hands often.\n"
                 android:layout_marginBottom="25dp" />
 
@@ -86,6 +90,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:fontFamily="@font/montserrat"
+                android:textColor="@color/colorPrimaryDarker"
                 android:text="Use soap as it is very effective at killing all types of bacteria and viruses.Lather generoysly with soap and rub all parts of your hands: fingers, palm, back of the hand, fingernails, and more.\n" />
 
             <ImageView
@@ -106,6 +111,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:fontFamily="@font/montserrat"
+                android:textColor="@color/colorPrimaryDarker"
                 android:text="Keep yourself and your family safe by staying inside your house unless needing to go out for necessities such as food.Wear protective clothing if you can, like masks. Be quick outside and try to do your outside business when there are less people outside.\n"
                 android:layout_marginBottom="25dp"
                 android:gravity="start" />
@@ -128,6 +134,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:fontFamily="@font/montserrat"
+                android:textColor="@color/colorPrimaryDarker"
                 android:text="Get the number of your local government unit and barangay. Coordinate with them for matters relating to the distribution of relief.This text is not final.\n"
                 android:layout_marginBottom="25dp" />
         </LinearLayout>
@@ -158,8 +165,6 @@
             app:cornerRadius="5dp"
             android:onClick="cancelActivity"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
-
 
     </RelativeLayout>
 </RelativeLayout>

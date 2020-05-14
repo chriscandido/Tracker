@@ -12,8 +12,8 @@ import java.util.List;
 public class UserDBSymptoms {
 
     Context context;
-    String symptoms;
-    Integer date;
+    private String symptoms;
+    private Integer date;
 
     public UserDBSymptoms(String symptoms, Integer date) {
         this.symptoms = symptoms;
