@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activity.InformationActivity">
+
+    <!-- CardView Options-->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Purge Covid-19-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_purgeCovid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardElevation="5dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="100dp"
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/textViewPurgeCovid19"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:text="PurGE COVID-19"
+                        android:textSize="20sp"
+                        android:textColor="@color/colorSecondary"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignLeft="@+id/imageViewSearch"/>
+                    <Button
+                        android:id="@+id/button_goToPurgeCovid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Continue to purge covid-19"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/montserrat"
+                        android:backgroundTint="@color/colorPrimaryDarker"
+                        android:layout_below="@+id/textViewPurgeCovid19"/>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:text="Promoting urgent and collective response against COVID-19 though Geomatics by UP Department of Geodetic Engineering and UP College of Engineering"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/montserrat"
+                        android:layout_below="@+id/button_goToPurgeCovid"/>
+                    <ImageView
+                        android:id="@+id/imageViewSearch"
+                        android:layout_height="30dp"
+                        android:layout_width="30dp"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/icon_logo_button_search"
+                        android:scaleType="centerInside"
+                        android:layout_alignParentLeft="true" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- EndCov -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_endCov"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="100dp"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textViewEndCov"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:text="Endcov.Ph"
+                        android:textSize="20sp"
+                        android:textColor="@color/colorSecondary"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignLeft="@+id/imageViewSearch02"/>
+
+                    <Button
+                        android:id="@+id/button_goToEndCov"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Continue to endcov.ph"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/montserrat"
+                        android:backgroundTint="@color/colorPrimaryDarker"
+                        android:layout_below="@+id/textViewEndCov"/>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:text="The UP Resilience Institute's EndCov Dashboard was a site developed for the University of the Philippines community and the public to access information about the COVID-19 pandemic. It was made through collective efforts of faculty members, researchers from different constituent universities of UP as well as volunteers, alumni, students, and friends."
+                        android:textSize="12sp"
+                        android:fontFamily="@font/montserrat"
+                        android:layout_below="@+id/button_goToEndCov"/>
+
+                    <ImageView
+                        android:id="@+id/imageViewSearch02"
+                        android:layout_height="30dp"
+                        android:layout_width="30dp"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/icon_logo_button_search"
+                        android:scaleType="centerInside"
+                        android:layout_alignParentLeft="true" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Trans -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_trams"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="100dp"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textViewTrams"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:text="TrAMS"
+                        android:textSize="20sp"
+                        android:textColor="@color/colorSecondary"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignLeft="@+id/imageViewSearch03"/>
+
+                    <Button
+                        android:id="@+id/button_goToTrams"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Continue to TrAMS"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/montserrat"
+                        android:backgroundTint="@color/colorPrimaryDarker"
+                        android:layout_below="@+id/textViewTrams"/>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:text="Created for the people, by the people. TrAMS is an online needs and allocations tracker for medical supplies of local hospitals in the Philippines where inventories are directly given by trusted medical personnel"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/montserrat"
+                        android:layout_below="@+id/button_goToTrams"/>
+
+                    <ImageView
+                        android:id="@+id/imageViewSearch03"
+                        android:layout_height="30dp"
+                        android:layout_width="30dp"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/icon_logo_button_search"
+                        android:scaleType="centerInside"
+                        android:layout_alignParentLeft="true" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

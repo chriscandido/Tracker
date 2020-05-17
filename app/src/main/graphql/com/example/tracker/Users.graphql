@@ -26,3 +26,11 @@ mutation UpdateSymptomHistory ($input: SymptomsListInput!){
         }
     }
 }
+
+mutation UpdateBluetoothDataHistory($input: BluetoothDataListInput!){
+    updateBluetoothDataHistory(input:$input){
+        id, bluetoothDataHistory {
+            macAddress, distance
+        }
+    }
+}

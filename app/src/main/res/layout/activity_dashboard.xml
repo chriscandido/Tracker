@@ -195,7 +195,7 @@
                     <ImageView
                         android:id="@+id/imageSymptoms"
                         android:maxHeight="90dp"
-                        android:src="@drawable/icons_logo_buttons_symtpoms"
+                        android:src="@drawable/icons_logo_buttons_symptoms"
                         android:layout_alignRight="@id/textViewSymptoms"
                         style="@style/homeCardImage"/>
 
@@ -210,6 +210,7 @@
                 android:layout_marginTop="5dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="goToContactTracing"
                 app:cardCornerRadius="10dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardElevation="5dp">
@@ -294,6 +295,7 @@
                 android:layout_marginTop="5dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="goToInformation"
                 app:cardCornerRadius="10dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardElevation="5dp">
@@ -301,29 +303,29 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:minHeight="100dp"
                     android:background="@color/colorSlightlyNegative"
+                    android:minHeight="100dp"
                     android:padding="10dp">
 
                     <TextView
                         android:id="@+id/textViewWebsite"
-                        android:text="Information"
-                        android:fontFamily="@font/montserrat_bold"
+                        style="@style/viewParent.headerText.HomeCardTitle"
                         android:layout_alignParentTop="true"
-                        style="@style/viewParent.headerText.HomeCardTitle" />
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Information" />
 
                     <TextView
-                        android:text="Get additional information about \nthe current situation of COVID-19\n pandemic"
-                        android:fontFamily="@font/montserrat_bold"
+                        style="@style/viewParent.headerText.homeCardContent"
                         android:layout_below="@id/textViewWebsite"
-                        style="@style/viewParent.headerText.homeCardContent" />
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Get additional information about \nthe current situation of COVID-19\n pandemic" />
 
                     <ImageView
                         android:id="@+id/imageWebsite"
-                        android:maxHeight="90dp"
-                        android:src="@drawable/icons_logo_buttons_website"
+                        style="@style/homeCardImage"
                         android:layout_alignRight="@id/textViewWebsite"
-                        style="@style/homeCardImage"/>
+                        android:maxHeight="90dp"
+                        android:src="@drawable/icons_logo_buttons_website" />
 
                 </RelativeLayout>
 

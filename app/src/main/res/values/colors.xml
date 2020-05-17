@@ -25,4 +25,5 @@
     <color name="colorBackgroundGray">#FEFEFE</color>
     <color name="colorBackgroundGray2">#FAFAFA</color>
     <color name="colorOffWhite">#FDFDFD</color>
+    <color name="colorTransparentWhite">#00FFFFFF</color>
 </resources>

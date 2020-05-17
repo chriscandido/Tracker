@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- How To Stay Safe-->
+    <string name="staysafe_body01">
+        \t\tRight now, we are experiencing a pandemic crisis. Sars-CoV-2 that causes the Corona Virus Disease - 2019 or simply COVID-19 is rapidly spreading throughout our communities.To keep you and your family safe, please observe the following.\n
+    </string>
+
+    <string name="staysafe_body02">
+        Your hands touch many surfaces throughout the day and this makes them a likely place for the virus to stay.To decrease the chances of spreading the virus and catching it yourself, practice washing your hands as often as possible.\n
+    </string>
+
+    <string name="staysafe_body03">
+        Use soap as it is very effective at killing bacteria and viruses.Lather generously with soap and rub all parts of your hands: fingers, palm, back of the hand, fingernails, and more.\n
+    </string>
+
+    <string name="staysafe_body04">
+        Keep yourself and your family safe by staying inside your house unless there is a need to buy basic necessities such as food, medicine, and water.Wear mask or protective clothing. Do not stay outdoors for too long and try not to go outside when there are a lot of people.\n
+    </string>
+
+    <string name="staysafe_body05">
+        Get the mobile number of your local government unit and/or any barangay officilas. Coordinate with them for matters relating to relief good distribution, issuance of quarantine pass, or reporting cases.\n
+    </string>
+
+</resources>

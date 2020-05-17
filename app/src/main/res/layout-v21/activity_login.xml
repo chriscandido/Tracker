@@ -83,8 +83,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputEditText_dateOfBirth"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="+63"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!--Subscribe Button-->

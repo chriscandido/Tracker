@@ -16,8 +16,8 @@
         android:paddingBottom="15dp"
         android:textSize="25sp"
         android:textAlignment="center"
-        android:fontFamily="@font/montserrat"
-        android:textColor="@color/contentTextColor"
+        android:fontFamily="@font/montserrat_bold"
+        android:textColor="@color/colorSecondary"
         android:gravity="center_horizontal" />
 
     <TextView
@@ -29,7 +29,7 @@
         android:textAlignment="center"
         android:textSize="18sp"
         android:gravity="center_horizontal"
-        android:textColor="@color/colorMainGray"
+        android:textColor="@color/colorNeutral"
         android:fontFamily="@font/montserrat"
         android:layout_below="@+id/symptoms_title"/>
 
@@ -194,15 +194,15 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginBottom="8dp"
                     android:layout_below="@+id/textView_severe"/>
+
                 <CheckBox
                     android:id="@+id/symptoms_pneumonia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pneumonia"
-                    android:fontFamily="@font/montserrat"
+                    android:layout_below="@+id/symptoms_severerespiratoryinfection"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_below="@+id/symptoms_severerespiratoryinfection"/>
+                    android:fontFamily="@font/montserrat"
+                    android:text="Pneumonia" />
                 <CheckBox
                     android:id="@+id/symptoms_difficultyinbreathing"
                     android:layout_width="wrap_content"

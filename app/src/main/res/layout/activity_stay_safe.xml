@@ -58,8 +58,7 @@
                 android:layout_marginRight="30dp"
                 android:fontFamily="@font/montserrat"
                 android:gravity="fill_horizontal"
-                android:textColor="@color/colorPrimaryDarker"
-                android:text="\t\tRight now, we are experiencing a pandemic. The Sars-CoV-2 virus that cause the new corona virus disease - 2019 or covid-19 is spreading rapidly.To keep you and your family safe, please observe the following.\n" />
+                android:text="@string/staysafe_body01" />
 
             <me.biubiubiu.justifytext.library.JustifyTextView
                 android:layout_width="wrap_content"
@@ -68,8 +67,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:fontFamily="@font/montserrat"
-                android:textColor="@color/colorPrimaryDarker"
-                android:text="Your hands touch many surfaces throughout the day and this makes your hands a likely place for the virus.To decrease the chances of spread of the virus and catching it yourself, practice washing your hands often.\n"
+                android:text="@string/staysafe_body02"
                 android:layout_marginBottom="25dp" />
 
             <ImageView
@@ -90,8 +88,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:fontFamily="@font/montserrat"
-                android:textColor="@color/colorPrimaryDarker"
-                android:text="Use soap as it is very effective at killing all types of bacteria and viruses.Lather generoysly with soap and rub all parts of your hands: fingers, palm, back of the hand, fingernails, and more.\n" />
+                android:text="@string/staysafe_body03" />
 
             <ImageView
                 android:id="@+id/instructions_soap"
@@ -111,8 +108,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:fontFamily="@font/montserrat"
-                android:textColor="@color/colorPrimaryDarker"
-                android:text="Keep yourself and your family safe by staying inside your house unless needing to go out for necessities such as food.Wear protective clothing if you can, like masks. Be quick outside and try to do your outside business when there are less people outside.\n"
+                android:text="@string/staysafe_body04"
                 android:layout_marginBottom="25dp"
                 android:gravity="start" />
 
@@ -134,8 +130,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:fontFamily="@font/montserrat"
-                android:textColor="@color/colorPrimaryDarker"
-                android:text="Get the number of your local government unit and barangay. Coordinate with them for matters relating to the distribution of relief.This text is not final.\n"
+                android:text="@string/staysafe_body05"
                 android:layout_marginBottom="25dp" />
         </LinearLayout>
 
