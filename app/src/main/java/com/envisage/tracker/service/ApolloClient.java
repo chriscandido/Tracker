@@ -8,8 +8,12 @@ public class ApolloClient {
 
     public static com.apollographql.apollo.ApolloClient setupApollo(){
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .build();
 
-        return com.apollographql.apollo.ApolloClient.builder().serverUrl(BASE_URL).okHttpClient(okHttpClient).build();
+        return com.apollographql.apollo.ApolloClient.builder()
+                .serverUrl(BASE_URL)
+                .okHttpClient(okHttpClient)
+                .build();
     }
 }

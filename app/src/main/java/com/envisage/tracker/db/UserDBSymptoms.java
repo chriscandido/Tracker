@@ -1,4 +1,4 @@
-package com.envisage.tracker.utils;
+package com.envisage.tracker.db;
 
 import android.content.Context;
 

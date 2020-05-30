@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ProfileActivity">
+
+    <!-- Main Content -->
+    <!-- Title Profile -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_ProfileTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="10dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardElevation="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_ProfileTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Profile"
+                android:textSize="25sp"
+                android:textColor="@color/colorSecondary"
+                android:textAlignment="gravity"
+                android:gravity="center"
+                android:fontFamily="@font/montserrat_bold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView_ProfileCover"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/profile"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/imageView_ProfileCover"
+                    android:layout_alignParentTop="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView_ProfileCover_Name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Juan Dela Cruz"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/montserrat_bold"/>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp">
+
+                        <TextView
+                            android:id="@+id/textView_ProfileCover_Age"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Age: "
+                            android:textSize="12sp"
+                            android:fontFamily="@font/montserrat"/>
+
+                        <TextView
+                            android:id="@+id/textView_ProfileCover_LabelAge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="20 years old"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/montserrat"
+                            android:layout_toRightOf="@id/textView_ProfileCover_Age"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp">
+
+                        <TextView
+                            android:id="@+id/textView_ProfileCover_Gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gender: "
+                            android:textSize="12sp"
+                            android:fontFamily="@font/montserrat"/>
+
+                        <TextView
+                            android:id="@+id/textView_ProfileCover_LabelGender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Male"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/montserrat"
+                            android:layout_toRightOf="@id/textView_ProfileCover_Gender"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Personal Information: Mobile Number -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout_ProfileCover_MobileNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_phone_black_24dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="MOBILE NUMBER"
+                android:textSize="15sp"
+                android:fontFamily="@font/montserrat"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView_ProfileCover_LabelMobileNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/linearLayout_ProfileCover_MobileNumber"
+            android:text="0917523625"
+            android:textSize="15sp"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+    <!-- Personal Information: Present Address -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout_ProfileCover_PresentAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_location_on_black_24dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="PRESENT ADDRESS"
+                android:textSize="15sp"
+                android:fontFamily="@font/montserrat"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView_ProfileCover_LabelPresentAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/linearLayout_ProfileCover_PresentAddress"
+            android:text="Rm. 2138, Bldg 21, UP Bliss, Brgy. San Vicente, Quezon City, MEtro MAnila"
+            android:textSize="15sp"
+            android:textAlignment="center"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal" />
+
+    </RelativeLayout>
+
+    <!-- Personal Information: Test Result -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout_ProfileCover_TestResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_local_hospital_black_24dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="TEST RESULT"
+                android:textSize="15sp"
+                android:fontFamily="@font/montserrat"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView_ProfileCover_LabelTestResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/linearLayout_ProfileCover_TestResult"
+            android:text="Positive"
+            android:textSize="15sp"
+            android:textAlignment="center"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal" />
+
+    </RelativeLayout>
+
+    <!-- Floating Action Button for Edit Profile -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_buttonEdit"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/colorWhite"
+            android:src="@drawable/ic_edit_black_24dp"
+            app:fabSize="mini"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

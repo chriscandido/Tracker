@@ -1,12 +1,12 @@
-package com.envisage.tracker.utils;
+package com.envisage.tracker.db;
 
 import android.location.Location;
 
-public class LocationHolder {
+public class UserDBLocationHelper {
 
     private Location location;
 
-    public LocationHolder(Location location){
+    public UserDBLocationHelper(Location location){
         this.location = location;
     }
 

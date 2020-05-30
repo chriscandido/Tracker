@@ -79,21 +79,58 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
     <!--Menu Text-->
+    <ImageView
+        android:id="@+id/imageView_menuIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:foregroundGravity="center"
+        android:src="@drawable/ic_menu_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textview_MainMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="5dp"
         android:clickable="true"
-        android:onClick="goToDashboard"
         android:focusable="true"
+        android:fontFamily="@font/montserrat"
+        android:onClick="goToDashboard"
         android:text="@string/menu"
         android:textColor="@color/colorSecondary"
-        android:textSize="20sp"
-        android:fontFamily="@font/montserrat_bold"
-        android:background="@android:color/transparent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_menuIcon"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_menuIcon"
+        app:layout_constraintTop_toTopOf="@+id/imageView_menuIcon" />
+
+    <!--Profile Text-->
+    <ImageView
+        android:id="@+id/imageView_profileIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/ic_account_circle_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/textview_UserProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/montserrat"
+        android:onClick="goToProfile"
+        android:text="PROFILE"
+        android:textColor="@color/colorSecondary"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_profileIcon"
+        app:layout_constraintStart_toEndOf="@+id/imageView_profileIcon"
+        app:layout_constraintTop_toTopOf="@+id/imageView_profileIcon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

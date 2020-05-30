@@ -3,17 +3,13 @@ package com.envisage.tracker.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.util.Log;
 
 import com.envisage.tracker.utils.LatLng;
-import com.envisage.tracker.utils.LocationHolder;
-import com.envisage.tracker.utils.UserDBBluetoothHelper;
-import com.envisage.tracker.utils.UserDBContactHelper;
-import com.envisage.tracker.utils.UserDBHelper;
-import com.envisage.tracker.utils.UserDBSymptoms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +18,7 @@ public class UserDBHandler extends SQLiteOpenHelper {
 
     private final Context context;
 
-    //----------------------------------------------------------------------------------------------Databse name and version
+    //----------------------------------------------------------------------------------------------Database name and version
     private static int DB_VERSION = 2;
     private static String DB_NAME = "ConTra";
 
@@ -39,6 +35,19 @@ public class UserDBHandler extends SQLiteOpenHelper {
 
     //----------------------------------------------------------------------------------------------Userprofile column names
     private static final String KEY_DATEOFBIRTH = "dateOfBirth";
+
+    private static final String KEY_FIRSTNAME = "firstName";
+    private static final String KEY_LASTNAME = "lastName";
+    private static final String KEY_AGE = "age";
+    private static final String KEY_CONTACT = "contactNumber";
+    private static final String KEY_PERMANENT_ADDRESS = "permanentAddress";
+    private static final String KEY_MUN_CITY = "municipalityOrCity";
+    private static final String KEY_PRESENT_ADDRESS = "presentAddress";
+    private static final String KEY_PRESENT_MUN_CITY = "presentMunicipalityOrCity";
+    private static final String KEY_ISSUSPECTED_OF_CONTACT = "isSuspectedOfContact";
+    private static final String KEY_ISPUI = "isPUI";
+    private static final String KEY_GENDER = "gender";
+    private static final String KEY_TEST_RESULT = "testResult";
 
     //----------------------------------------------------------------------------------------------Location column names
     private static final String KEY_LATITUDE = "latitude";
@@ -74,7 +83,18 @@ public class UserDBHandler extends SQLiteOpenHelper {
         String CREATE_USERPROFILES_TABLE = "CREATE TABLE " + TABLE_USERS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"     //0
                 + KEY_UNIQUEID + " TEXT,"                            //1
-                + KEY_DATEOFBIRTH + " INTEGER " + ")";               //2
+                + KEY_FIRSTNAME + " TEXT,"                           //2
+                + KEY_LASTNAME + " TEXT,"                            //3
+                + KEY_AGE + " INTEGER,"                              //4
+                + KEY_CONTACT + " TEXT,"                             //5
+                + KEY_PERMANENT_ADDRESS + " TEXT,"                   //
+                + KEY_MUN_CITY + " TEXT,"                            //7
+                + KEY_PRESENT_ADDRESS + " TEXT,"                     //8
+                + KEY_PRESENT_MUN_CITY + " TEXT,"                    //9
+                + KEY_ISSUSPECTED_OF_CONTACT + " INTEGER,"           //10
+                + KEY_ISPUI + " INTEGER,"                            //11
+                + KEY_GENDER + " TEXT,"                              //12
+                + KEY_TEST_RESULT + " TEXT " + ")";                  //13
         db.execSQL(CREATE_USERPROFILES_TABLE);
 
         String CREATE_LOCATIONS_TABLE = "CREATE TABLE " + TABLE_LOCATIONS + "("
@@ -112,7 +132,7 @@ public class UserDBHandler extends SQLiteOpenHelper {
     private static final int NOT_AVAILABLE = -10000;
 
     private static final String DB_ALTER_TABLE_USERS_TO_V2 = "ALTER TABLE " + TABLE_USERS
-            + " ADD COLUMN " + KEY_DATEOFBIRTH + " INTEGER DEFAULT " + NOT_AVAILABLE +";";
+            + " ADD COLUMN " + KEY_TEST_RESULT + " TEXT DEFAULT " + NOT_AVAILABLE +";";
     private static final String DB_ALTER_TABLE_LOCATIONS_TO_V2 = "ALTER TABLE " + TABLE_LOCATIONS
             + " ADD COLUMN " + KEY_CREATEDAT + " REAL DEFAULT " + NOT_AVAILABLE +";";
     private static final String DB_ALTER_TABLE_SYMPTOMS_TO_V2 = "ALTER TABLE " + TABLE_SYMPTOMS
@@ -137,12 +157,12 @@ public class UserDBHandler extends SQLiteOpenHelper {
     }
 
     //----------------------------------------------------------------------------------------------add location of user
-    public void addLocation(LocationHolder locationHolder, UserDBHelper userDBHelper){
+    public void addLocation(UserDBLocationHelper userDBLocationHelper, String uniqueId){
         SQLiteDatabase db = this.getWritableDatabase();
-        Location loc = locationHolder.getLocation();
+        Location loc = userDBLocationHelper.getLocation();
 
         ContentValues locValues = new ContentValues();
-        locValues.put(KEY_UNIQUEID, userDBHelper.getUnique_Id());
+        locValues.put(KEY_UNIQUEID, uniqueId);
         locValues.put(KEY_LATITUDE, loc.getLatitude());
         locValues.put(KEY_LONGITUDE, loc.getLongitude());
         locValues.put(KEY_CREATEDAT, loc.getTime());
@@ -154,13 +174,38 @@ public class UserDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //----------------------------------------------------------------------------------------------add unique id of the user
+    //----------------------------------------------------------------------------------------------add user profile
     public void addUser (UserDBHelper userDBHelper){
         SQLiteDatabase db = this.getWritableDatabase();
+
         String uid = userDBHelper.getUnique_Id();
+        String firstName = userDBHelper.getFirstName();
+        String lastName = userDBHelper.getLastName();
+        Integer age = userDBHelper.getAge();
+        String contactNumber = userDBHelper.getContactNumber();
+        String permanentAddress = userDBHelper.getPermanentAddress();
+        String municipalityOrCity = userDBHelper.getMunicipalityOrCity();
+        String presentAddress = userDBHelper.getPresentAddress();
+        String present_municipalityOrCity = userDBHelper.getPresent_municipalityOrCity();
+        Integer isSuspectedOfContact = userDBHelper.getIsSuspectedOfContact();
+        Integer isPUI = userDBHelper.getIsPUI();
+        String gender = userDBHelper.getGender();
+        String testResult = userDBHelper.getTestResult();
 
         ContentValues userValues = new ContentValues();
         userValues.put(KEY_UNIQUEID, uid);
+        userValues.put(KEY_FIRSTNAME, firstName);
+        userValues.put(KEY_LASTNAME, lastName);
+        userValues.put(KEY_AGE, age);
+        userValues.put(KEY_CONTACT, contactNumber);
+        userValues.put(KEY_PERMANENT_ADDRESS, permanentAddress);
+        userValues.put(KEY_MUN_CITY, municipalityOrCity);
+        userValues.put(KEY_PRESENT_ADDRESS, presentAddress);
+        userValues.put(KEY_PRESENT_MUN_CITY, present_municipalityOrCity);
+        userValues.put(KEY_ISSUSPECTED_OF_CONTACT, isSuspectedOfContact);
+        userValues.put(KEY_ISPUI, isPUI);
+        userValues.put(KEY_GENDER, gender);
+        userValues.put(KEY_TEST_RESULT, testResult);
 
         db.beginTransaction();
         db.insert(TABLE_USERS, null, userValues);
@@ -185,11 +230,11 @@ public class UserDBHandler extends SQLiteOpenHelper {
     }
 
     //----------------------------------------------------------------------------------------------add bluetooth connections
-    public void addScannedBluetooth (UserDBBluetoothHelper userDBBluetoothHelper, UserDBHelper userDBHelper){
+    public void addScannedBluetooth (UserDBBluetoothHelper userDBBluetoothHelper, String uniqueId){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues bluetoothValues = new ContentValues();
-        bluetoothValues.put(KEY_UNIQUEID, userDBHelper.getUnique_Id());
+        bluetoothValues.put(KEY_UNIQUEID, uniqueId);
         bluetoothValues.put(KEY_MCADDRESS, userDBBluetoothHelper.getMcaddress());
         bluetoothValues.put(KEY_DISTANCE, userDBBluetoothHelper.getDistance());
         bluetoothValues.put(KEY_CREATEDAT, userDBBluetoothHelper.getCreatedAd());
@@ -202,11 +247,11 @@ public class UserDBHandler extends SQLiteOpenHelper {
     }
 
     //----------------------------------------------------------------------------------------------add contacts of the user
-    public void addContact(String number, String address, String date, UserDBHelper userDBHelper){
+    public void addContact(String number, String address, String date, String uniqueId){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contactValues = new ContentValues();
-        contactValues.put(KEY_UNIQUEID, userDBHelper.getUnique_Id());
+        contactValues.put(KEY_UNIQUEID, uniqueId);
         contactValues.put(KEY_NUMBER, number);
         contactValues.put(KEY_ADDRESS, address);
         contactValues.put(KEY_DATE, date);
@@ -219,9 +264,9 @@ public class UserDBHandler extends SQLiteOpenHelper {
     }
 
     //----------------------------------------------------------------------------------------------get single location using id
-    public LocationHolder getLocation(long id){
+    public UserDBLocationHelper getLocation(long id){
         SQLiteDatabase db = this.getWritableDatabase();
-        LocationHolder locationHolder = null;
+        UserDBLocationHelper userDBLocationHelper = null;
 
         Cursor cursor = db.query(TABLE_LOCATIONS, new String[] {
                 KEY_ID,
@@ -238,11 +283,11 @@ public class UserDBHandler extends SQLiteOpenHelper {
             loc.setLongitude(cursor.getDouble(3));
             loc.setTime(cursor.getLong(4));
 
-            locationHolder = new LocationHolder(loc);
+            userDBLocationHelper = new UserDBLocationHelper(loc);
             cursor.close();
 
         }
-        return locationHolder;
+        return userDBLocationHelper;
     }
 
     //----------------------------------------------------------------------------------------------get list of location using id
@@ -268,7 +313,24 @@ public class UserDBHandler extends SQLiteOpenHelper {
         return latLngList;
     }
 
-    //----------------------------------------------------------------------------------------------get the last id
+    //----------------------------------------------------------------------------------------------get last id from user profile
+    public int getLastUserId(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String QUERY ="SELECT " + KEY_ID + " FROM " + TABLE_USERS + " ORDER BY " + KEY_ID + " DESC LIMIT 1";
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        int id = 0;
+        if (cursor != null){
+            if(cursor.moveToFirst()){
+                id =cursor.getInt(0);
+            } else
+                Log.v("DATABASE", "[#] DatabaseHandler.java - User Table is Empty");
+            cursor.close();
+        } return id;
+    }
+
+    //----------------------------------------------------------------------------------------------get last id
     public int getLastId(){
         SQLiteDatabase db = this.getReadableDatabase();
         String QUERY ="SELECT " + KEY_ID + " FROM " + TABLE_LOCATIONS + " ORDER BY " + KEY_ID + " DESC LIMIT 1";
@@ -286,9 +348,9 @@ public class UserDBHandler extends SQLiteOpenHelper {
     }
 
     //----------------------------------------------------------------------------------------------get last location
-    public LocationHolder getLastLocation(){
+    public UserDBLocationHelper getLastLocation(){
         SQLiteDatabase db = this.getWritableDatabase();
-        LocationHolder locationHolder = null;
+        UserDBLocationHelper userDBLocationHelper = null;
 
         String QUERY ="SELECT "
                 + KEY_ID + ","
@@ -308,13 +370,77 @@ public class UserDBHandler extends SQLiteOpenHelper {
             loc.setTime(cursor.getLong(3));
             Log.d("DATABASE", "[#] DatabaseHandler.java - LOCATION: " + cursor.getDouble(1)
                     +  " && " + cursor.getDouble(2));
-            locationHolder = new LocationHolder(loc);
+            userDBLocationHelper = new UserDBLocationHelper(loc);
             cursor.close();
         }
-        return locationHolder;
+        return userDBLocationHelper;
     }
 
-    //----------------------------------------------------------------------------------------------get Last Scanned Bluetooth
+    //----------------------------------------------------------------------------------------------get last user profile
+    public UserDBHelper getLastUserProfile() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        UserDBHelper userDBHelper = null;
+
+        String QUERY = "SELECT "
+                + KEY_ID + ","
+                + KEY_UNIQUEID + ","
+                + KEY_FIRSTNAME + ","
+                + KEY_LASTNAME + ","
+                + KEY_AGE + ","
+                + KEY_CONTACT + ","
+                + KEY_PERMANENT_ADDRESS + ","
+                + KEY_MUN_CITY + ","
+                + KEY_PRESENT_ADDRESS + ","
+                + KEY_PRESENT_MUN_CITY + ","
+                + KEY_ISSUSPECTED_OF_CONTACT + ","
+                + KEY_ISPUI + ","
+                + KEY_GENDER + ","
+                + KEY_TEST_RESULT + " FROM "
+                + TABLE_USERS + " ORDER BY "
+                + KEY_ID + " DESC LIMIT 1";
+
+        Cursor cursor = db.rawQuery(QUERY, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                String uniqueId = cursor.getString(1);
+                String firstName = cursor.getString(2);
+                String lastName = cursor.getString(3);
+                Integer age = cursor.getInt(4);
+                String contactNumber = cursor.getString(5);
+                String permanentAddress = cursor.getString(6);
+                String municipalityOrCity = cursor.getString(7);
+                String presentAddress = cursor.getString(8);
+                String presentMunicipalityOrCity = cursor.getString(9);
+                Integer isSuspectedofContact = cursor.getInt(10);
+                Integer isPUI = cursor.getInt(11);
+                String gender = cursor.getString(12);
+                String testResult = cursor.getString(13);
+                userDBHelper = new UserDBHelper(uniqueId,
+                        firstName,
+                        lastName,
+                        age,
+                        contactNumber,
+                        permanentAddress,
+                        municipalityOrCity,
+                        presentAddress,
+                        presentMunicipalityOrCity,
+                        isSuspectedofContact,
+                        isPUI,
+                        gender,
+                        testResult);
+                Log.v("DATABASE", "[#] DatabaseHandler.java - USER PROFILE: " + "\nName: " + firstName + " " + lastName +
+                        "\nAge: " + age + "\nContact Number: " + contactNumber + "\nAddress: " + presentAddress + "," + presentMunicipalityOrCity +
+                        "\nTest Result: " + testResult);
+            }
+            else
+                Log.v("DATABASE", "[#] DatabaseHandler.java - UserProfile Table is Empty");
+            cursor.close();
+        }
+        return userDBHelper;
+    }
+
+    //----------------------------------------------------------------------------------------------get last scanned Bluetooth
     public UserDBBluetoothHelper getLastScannedBluetooth() {
         SQLiteDatabase db = this.getWritableDatabase();
         UserDBBluetoothHelper userDBBluetoothHelper = null;
@@ -335,17 +461,17 @@ public class UserDBHandler extends SQLiteOpenHelper {
             String mcaddress = cursor.getString(2);
             Float distance = cursor.getFloat(3);
             Integer createdAt = cursor.getInt(4);
-            Log.d("DATABASE", "[#] DatabaseHandler.java - BLUETOOTH: " + cursor.getString(2)
+            Log.d("DATABASE", "[#] DatabaseHandler.java - BLUETOOTH CONNECTION: " + cursor.getString(2)
                     + " && " + cursor.getFloat(3));
             userDBBluetoothHelper = new UserDBBluetoothHelper(mcaddress, distance, createdAt);
         } else {
-            Log.v("DATABASE", "[#] DatabaseHandler.java - Location Table is Empty");
+            Log.v("DATABASE", "[#] DatabaseHandler.java - Bluetooth Connection Table is Empty");
             cursor.close();
         } return userDBBluetoothHelper;
 
     }
 
-    //----------------------------------------------------------------------------------------------get the last symptoms
+    //----------------------------------------------------------------------------------------------get last symptoms
     public UserDBSymptoms getLastSymptoms(){
         SQLiteDatabase db = this.getWritableDatabase();
         UserDBSymptoms userDBSymptoms = null;
@@ -390,7 +516,7 @@ public class UserDBHandler extends SQLiteOpenHelper {
                 String address = cursor.getString(1);
                 String date = cursor.getString(2);
                 userDBContactHelper = new UserDBContactHelper(number, address, date);
-                Log.d("DATABASE", "[#] DatabaseHandler.java - CONTACT: " + userDBContactHelper.getNumber()
+                Log.d("DATABASE", "[#] DatabaseHandler.java - CONTACT NUMBER: " + userDBContactHelper.getNumber()
                         + " && " + "TIME: " + userDBContactHelper.getDate());
             } else
                 Log.v("DATABASE", "[#] DatabaseHandler.java - Contacts Table is Empty");
@@ -434,6 +560,52 @@ public class UserDBHandler extends SQLiteOpenHelper {
             return true;
         }
         return false;
+    }
+
+    //----------------------------------------------------------------------------------------------update user profile
+    public boolean updateUser (UserDBHelper userDBHelper, String lastID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String firstName = userDBHelper.getFirstName();
+        String lastName = userDBHelper.getLastName();
+        Integer age = userDBHelper.getAge();
+        String contactNumber = userDBHelper.getContactNumber();
+        String permanentAddress = userDBHelper.getPermanentAddress();
+        String municipalityOrCity = userDBHelper.getMunicipalityOrCity();
+        String presentAddress = userDBHelper.getPresentAddress();
+        String present_municipalityOrCity = userDBHelper.getPresent_municipalityOrCity();
+        Integer isSuspectedOfContact = userDBHelper.getIsSuspectedOfContact();
+        Integer isPUI = userDBHelper.getIsPUI();
+        String gender = userDBHelper.getGender();
+        String testResult = userDBHelper.getTestResult();
+
+        ContentValues userValues = new ContentValues();
+        userValues.put(KEY_FIRSTNAME, firstName);
+        userValues.put(KEY_LASTNAME, lastName);
+        userValues.put(KEY_AGE, age);
+        userValues.put(KEY_CONTACT, contactNumber);
+        userValues.put(KEY_PERMANENT_ADDRESS, permanentAddress);
+        userValues.put(KEY_MUN_CITY, municipalityOrCity);
+        userValues.put(KEY_PRESENT_ADDRESS, presentAddress);
+        userValues.put(KEY_PRESENT_MUN_CITY, present_municipalityOrCity);
+        userValues.put(KEY_ISSUSPECTED_OF_CONTACT, isSuspectedOfContact);
+        userValues.put(KEY_ISPUI, isPUI);
+        userValues.put(KEY_GENDER, gender);
+        userValues.put(KEY_TEST_RESULT, testResult);
+
+        try {
+            db.beginTransaction();
+            db.update(TABLE_USERS, userValues, "id = ?", new String[] { lastID });
+            db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
+            return true;
+
+        } catch (SQLException exception) {
+            db.close();
+            return false;
+
+        }
     }
 
     //----------------------------------------------------------------------------------------------delete table

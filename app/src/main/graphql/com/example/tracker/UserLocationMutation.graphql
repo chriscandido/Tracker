@@ -1,0 +1,8 @@
+mutation UpdateLocationHistory($input: LocationListInput!)
+{
+    updateLocationHistory(input:$input){
+        id, locationHistory{
+            latitude, longitude, createdAt
+        }
+    }
+}

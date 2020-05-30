@@ -16,7 +16,7 @@
         android:background="@color/colorWhite"
         android:paddingTop="30dp"
         android:paddingBottom="15dp"
-        android:textSize="22sp"
+        android:textSize="25sp"
         android:textAlignment="center"
         android:gravity="center_horizontal" />
 

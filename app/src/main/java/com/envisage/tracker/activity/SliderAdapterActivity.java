@@ -73,7 +73,7 @@ public class SliderAdapterActivity extends AppCompatActivity {
 
     public void goToEulaActivity(View view){
         if (userDBHandler.getKeyUniqueid().isEmpty()){
-            Intent intent = new Intent(getApplicationContext(), EulaActivity.class);
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         } else {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);

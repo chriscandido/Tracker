@@ -1,0 +1,37 @@
+mutation AddUser ($user: UserInput!) {
+    addUser(input: $user) {
+        id, profile {
+            firstName,
+            lastName,
+            age,
+            contactNumber,
+            permanentAddress,
+            municipalityOrCity,
+            presentAddress,
+            presentMunicipalityOrCity,
+            isSuspectedOfContact,
+            isPUI,
+            gender,
+            testResult
+        }
+    }
+}
+
+mutation UpdateUserProfile ($user: UserProfileInput!) {
+    updateUserProfile(input: $user) {
+        id, profile {
+            firstName,
+            lastName,
+            age,
+            contactNumber,
+            permanentAddress,
+            municipalityOrCity,
+            presentAddress,
+            presentMunicipalityOrCity,
+            isSuspectedOfContact,
+            isPUI,
+            gender,
+            testResult
+        }
+    }
+}

@@ -26,7 +26,7 @@ import com.envisage.tracker.MainActivity;
 import com.envisage.tracker.R;
 import com.envisage.tracker.db.UserDBHandler;
 import com.envisage.tracker.service.ApolloClient;
-import com.envisage.tracker.utils.UserDBHelper;
+import com.envisage.tracker.db.UserDBHelper;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity{
 
     private TextInputLayout text_inputNum;
     private TextInputEditText textInputEditText_inputNum;
-    private Button button_subscribe;
+    private Button button_subscribe, button_register;
     private String uid;
     private String number;
     private Integer random;
@@ -58,30 +58,24 @@ public class LoginActivity extends AppCompatActivity{
         setContentView(R.layout.activity_login);
 
         text_inputNum = findViewById(R.id.text_dateOfBirth);
+
         button_subscribe = findViewById(R.id.button_subscribe);
+        button_register = findViewById(R.id.button_registerLogin);
 
         userDBHandler.initializeDB();
 
-        initViews();
+        initPreferences();
         onClickButtonListener();
 
     }
 
-    public void initViews(){
+    public void initPreferences(){
         PreferenceActivity preferenceActivity = new PreferenceActivity();
         if (preferenceActivity.getUniqueId(this) != null){
             Log.v("Response", "[#] PreferenceActivity.java ");
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("dateOfBirth", random);
             startActivity(intent);
         }
-    }
-
-    public UserInput addUserData(Integer input){
-        UserInput userInput = UserInput.builder()
-                .dateOfBirth(input)
-                .build();
-        return userInput;
     }
 
     private void onClickButtonListener() {
@@ -98,22 +92,20 @@ public class LoginActivity extends AppCompatActivity{
                         public void onClick(View v) {
                             number = text_inputNum.getEditText().getText().toString();
                             random = ThreadLocalRandom.current().nextInt(10000000, 99999999);
-                            ApolloClient.setupApollo().mutate(AddUserMutation.builder().user(addUserData(random)).build())
-                                .enqueue(new ApolloCall.Callback<AddUserMutation.Data>() {
-                                    @Override
-                                    public void onResponse(@NotNull Response<AddUserMutation.Data> response) {
-                                        uid = response.data().addUser().id();
-                                        postDataToDatabase(uid, random);
-                                        sendSMS(number, uid);
-                                    }
-                                    @Override
-                                    public void onFailure(@NotNull ApolloException e) {
-                                    }
-                                });
+                            postDataToDatabase();
+                            sendSMS(number, userDBHandler.getKeyUniqueid());
                             }
 
                     }
             );
+
+        button_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private boolean checkPermission(String sendSMS){
@@ -145,17 +137,16 @@ public class LoginActivity extends AppCompatActivity{
         Log.v("SMS RESPONSE:", "[#] LoginActivity.java - UNIQUE ID: " + uid);
     }
 
-    private void postDataToDatabase(String uid, Integer random){
-        userDBHelper = new UserDBHelper(uid);
-        userDBHandler.addUser(userDBHelper);
+    private void postDataToDatabase(){
         String new_uid = userDBHandler.getKeyUniqueid();
         if (userDBHandler.checkUniqueId(new_uid)){
             PreferenceActivity.saveUniqueId(new_uid, this);
             Intent intent = new Intent (getApplicationContext(), MainActivity.class);
-            intent.putExtra("dateOfBirth", random);
             startActivity(intent);
             Log.d("LOGIN RESPONSE", "[#] LoginActivity.java - SUCCESS! UNIQUE ID added to Database: " + new_uid);
             finish();
+        } else {
+            Toast.makeText(context, "Register first before subscribing to the application", Toast.LENGTH_LONG).show();
         }
     }
 }

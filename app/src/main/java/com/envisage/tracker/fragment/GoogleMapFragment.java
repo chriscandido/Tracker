@@ -1,4 +1,4 @@
-package com.envisage.tracker.utils;
+package com.envisage.tracker.fragment;
 
 import android.content.Intent;
 import android.location.Address;
@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.envisage.tracker.R;
 import com.envisage.tracker.activity.ContactTracingActivity;
-import com.envisage.tracker.fragment.GeocoderFailedFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,7 +28,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class GoogleMaps<AutocompleteSupportFragment>
+public class GoogleMapFragment<AutocompleteSupportFragment>
         extends FragmentActivity
         implements GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
@@ -91,7 +90,7 @@ public class GoogleMaps<AutocompleteSupportFragment>
                         LatLng latLng = marker.getPosition();
 
                         //reverse geocoder to show address of pinned location
-                        Geocoder geocoder = new Geocoder(GoogleMaps.this, Locale.getDefault());
+                        Geocoder geocoder = new Geocoder(GoogleMapFragment.this, Locale.getDefault());
                         List<Address> addresses = null;
                         try {
                             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
@@ -102,7 +101,7 @@ public class GoogleMaps<AutocompleteSupportFragment>
                         String address_string = String.valueOf(addresses.get(0).getAddressLine(0));
                         //String address_string = String.valueOf(addresses.get(0));
 
-                        Intent submitLocationAddressIntent = new Intent(GoogleMaps.this, ContactTracing.class);
+                        Intent submitLocationAddressIntent = new Intent(GoogleMapFragment.this, ContactTracing.class);
                         submitLocationAddressIntent.putExtra("location_address", address_string);
                         startActivity(submitLocationAddressIntent);
 
@@ -114,8 +113,8 @@ public class GoogleMaps<AutocompleteSupportFragment>
         // view my location on map
         // TODO: request for location permission from user
         mMap.setMyLocationEnabled(true);
-        mMap.setOnMyLocationButtonClickListener(GoogleMaps.this);
-        mMap.setOnMyLocationClickListener(GoogleMaps.this);
+        mMap.setOnMyLocationButtonClickListener(GoogleMapFragment.this);
+        mMap.setOnMyLocationClickListener(GoogleMapFragment.this);
 
         // TODO: create search bar with autocomplete using google places
         Places.initialize(getApplicationContext(), "AIzaSyAAEcTYPqxAEeO9zFcaQgcjY08xMuUneU8");
@@ -140,7 +139,7 @@ public class GoogleMaps<AutocompleteSupportFragment>
                     public void onClick(View v) {
                         // reverse geocoder to show address of pinned location
                         if (pinnedLocation[0] != null) {
-                            Geocoder geocoder = new Geocoder(GoogleMaps.this, Locale.getDefault());
+                            Geocoder geocoder = new Geocoder(GoogleMapFragment.this, Locale.getDefault());
                             List<Address> addresses;
                             try {
                                 addresses = geocoder.getFromLocation(pinnedLocation[0].latitude, pinnedLocation[0].longitude, 1);
@@ -155,7 +154,7 @@ public class GoogleMaps<AutocompleteSupportFragment>
                                     address_string[0] = "NO ADDRESS MATCHES WERE FOUND";
                                 }
 
-                                Intent submitLocationIntent = new Intent(GoogleMaps.this, ContactTracingActivity.class);
+                                Intent submitLocationIntent = new Intent(GoogleMapFragment.this, ContactTracingActivity.class);
                                 submitLocationIntent.putExtra("location_address", address_string[0]);
                                 startActivity(submitLocationIntent);
 
@@ -165,7 +164,7 @@ public class GoogleMaps<AutocompleteSupportFragment>
                                 openGeocoderFailedDialog();
                             }
 
-                            //Intent submitLocationIntent = new Intent(GoogleMaps.this, ContactTracing.class);
+                            //Intent submitLocationIntent = new Intent(GoogleMapFragment.this, ContactTracing.class);
                             //submitLocationIntent.putExtra("location_address", address_string[0]);
                             //startActivity(submitLocationIntent);
                         } else {

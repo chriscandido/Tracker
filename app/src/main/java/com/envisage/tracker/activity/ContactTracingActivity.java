@@ -17,9 +17,9 @@ import android.widget.TextView;
 import com.envisage.tracker.DashboardActivity;
 import com.envisage.tracker.R;
 import com.envisage.tracker.db.UserDBHandler;
-import com.envisage.tracker.utils.GoogleMaps;
-import com.envisage.tracker.utils.UserDBContactHelper;
-import com.envisage.tracker.utils.UserDBHelper;
+import com.envisage.tracker.fragment.GoogleMapFragment;
+import com.envisage.tracker.db.UserDBContactHelper;
+import com.envisage.tracker.db.UserDBHelper;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -101,7 +101,7 @@ public class ContactTracingActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent startGoogleMaps = new Intent(ContactTracingActivity.this, GoogleMaps.class);
+                        Intent startGoogleMaps = new Intent(ContactTracingActivity.this, GoogleMapFragment.class);
                         startActivity(startGoogleMaps);
                     }
                 }
@@ -161,8 +161,8 @@ public class ContactTracingActivity extends AppCompatActivity {
     public void insertToDB(List<String> contactNumber, String address, String date){
         Gson gson = new Gson();
         String inputContactNumber = gson.toJson(contactNumber);
-        UserDBHelper userDBHelper = new UserDBHelper(userDBHandler.getKeyUniqueid());
-        userDBHandler.addContact(inputContactNumber, address, date, userDBHelper);
+        String userUniqueId = userDBHandler.getKeyUniqueid();
+        userDBHandler.addContact(inputContactNumber, address, date, userUniqueId);
         Log.d("JSON ARRAY", "[#] ContactTracingActivity.java - Contacts: " + inputContactNumber
                 + " && " + "DATE: " + date);
     }

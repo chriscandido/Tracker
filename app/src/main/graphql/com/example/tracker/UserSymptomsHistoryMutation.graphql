@@ -1,0 +1,7 @@
+mutation UpdateSymptomHistory ($input: SymptomsListInput!){
+    updateSymptomsHistory(input:$input){
+        id, symptomsHistory{
+            literal
+        }
+    }
+}

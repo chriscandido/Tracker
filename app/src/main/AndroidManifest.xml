@@ -24,7 +24,7 @@
         android:theme="@style/AppTheme">
         <!-- Activities -->
         <activity
-            android:name="com.envisage.tracker.activity.SplashActivity"
+            android:name=".activity.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,33 +32,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.envisage.tracker.activity.InformationActivity"/>
-        <activity android:name="com.envisage.tracker.activity.SliderAdapterActivity" />
-        <activity android:name="com.envisage.tracker.activity.EulaActivity" />
-        <activity android:name="com.envisage.tracker.activity.LoginActivity" />
-        <activity android:name="com.envisage.tracker.MainActivity" />
-        <activity android:name="com.envisage.tracker.DashboardActivity" />
-        <activity android:name="com.envisage.tracker.activity.UpdateSymptomsActivity" />
-        <activity android:name="com.envisage.tracker.activity.MapActivity" />
-        <activity android:name="com.envisage.tracker.activity.StaySafeActivity" />
-        <activity android:name="com.envisage.tracker.activity.ContactTracingActivity" />
+        <activity android:name=".activity.InformationActivity" />
+        <activity android:name=".activity.SliderAdapterActivity" />
+        <activity android:name=".activity.EulaActivity" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".DashboardActivity" />
+        <activity android:name=".activity.UpdateSymptomsActivity" />
+        <activity android:name=".activity.MapActivity" />
+        <activity android:name=".activity.StaySafeActivity" />
+        <activity android:name=".activity.ContactTracingActivity" />
+        <activity android:name=".activity.RegisterActivity"/>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".activity.EditProfileActivity" />
         <activity
-            android:name="com.envisage.tracker.utils.GoogleMaps"
-            android:label="Google Maps">
-
-        </activity>
+            android:name=".fragment.GoogleMapFragment"
+            android:label="Google Maps" />
         <!-- Service -->
         <service
-            android:name="com.envisage.tracker.service.LocationService"
+            android:name=".service.LocationService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name="com.envisage.tracker.service.ApolloService"
+            android:name=".service.ApolloService"
             android:enabled="true"
             android:exported="false" />
         <!-- Receiver -->
         <receiver
-            android:name="com.envisage.tracker.activity.BootBroadcastReceiver"
+            android:name=".activity.BootBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

@@ -23,7 +23,7 @@ import com.envisage.tracker.DashboardActivity;
 import com.envisage.tracker.R;
 import com.envisage.tracker.db.UserDBHandler;
 import com.envisage.tracker.service.ApolloClient;
-import com.envisage.tracker.utils.UserDBSymptoms;
+import com.envisage.tracker.db.UserDBSymptoms;
 import com.google.gson.Gson;
 
 //Apollo
@@ -154,7 +154,7 @@ public class UpdateSymptomsActivity extends AppCompatActivity {
                    Integer userDate = userDBHandler.getLastSymptoms().getDate();
                    String uniquedId = userDBHandler.getKeyUniqueid();
                    insertToServer(symptoms, userDate, uniquedId);
-                   Log.d("SERVER", "[#] UpdateSymptomsActivity.java - SYMPTOMS: " + symptoms +
+                   Log.d("DATABASE", "[#] UpdateSymptomsActivity.java - SYMPTOMS: " + symptoms +
                    " && " + " DATE " + userDate);
                    goToDashboard();
                    break;
@@ -166,7 +166,7 @@ public class UpdateSymptomsActivity extends AppCompatActivity {
        }
    }
 
-   public void insertToDB(List<String> userSymptoms, Integer time){
+   private void insertToDB(List<String> userSymptoms, Integer time){
         Gson gson = new Gson();
         String inputSymptoms = gson.toJson(userSymptoms);
         userDBHandler.addSymptoms(inputSymptoms,time);
@@ -211,7 +211,7 @@ public class UpdateSymptomsActivity extends AppCompatActivity {
                    @Override
                    public void onResponse(@NotNull Response<UpdateSymptomHistoryMutation.Data> response) {
                        UpdateSymptomHistoryMutation.Data data = response.data();
-                       Log.v("SERVER: ", "[#] UpdateSymptomsActivity.java: " + data.toString());
+                       Log.v("SERVER RESPONSE: ", "[#] UpdateSymptomsActivity.java: " + data.toString());
                    }
                    @Override
                    public void onFailure(@NotNull ApolloException e) {

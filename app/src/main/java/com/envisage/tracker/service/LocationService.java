@@ -46,10 +46,10 @@ import com.example.tracker.UpdateBluetoothDataHistoryMutation;
 import com.envisage.tracker.db.UserDBHandler;
 import com.example.tracker.type.BluetoothDataInput;
 import com.example.tracker.type.BluetoothDataListInput;
-import com.envisage.tracker.utils.LocationHolder;
+import com.envisage.tracker.db.UserDBLocationHelper;
 import com.envisage.tracker.utils.StringToInt;
-import com.envisage.tracker.utils.UserDBBluetoothHelper;
-import com.envisage.tracker.utils.UserDBHelper;
+import com.envisage.tracker.db.UserDBBluetoothHelper;
+import com.envisage.tracker.db.UserDBHelper;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -177,6 +177,7 @@ public class LocationService extends Service {
         return START_STICKY;
     }
 
+    //----------------------------------------------------------------------------------------------Notification Channel
     @RequiresApi(api = Build.VERSION_CODES.O)
     private Notification getNotification() {
 
@@ -234,6 +235,7 @@ public class LocationService extends Service {
         }
     }
 
+    //----------------------------------------------------------------------------------------------GPS Logging
     private LocationRequest setupLocationRequest(){
         LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(60 * 1000);
@@ -249,7 +251,6 @@ public class LocationService extends Service {
         return mLocationSettingsRequest;
     }
 
-    //----------------------------------------------------------------------------------------------GPS Logging
     public void startTrackingCallback(){
         Toast.makeText(this, "Requesting GPS", Toast.LENGTH_SHORT).show();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -276,9 +277,9 @@ public class LocationService extends Service {
                     String strLon = String.valueOf(lon);
                     String dTime = String.valueOf(time);
 
-                    LocationHolder locationHolder = new LocationHolder(location);
-                    UserDBHelper userDBHelper = new UserDBHelper(userDBHandler.getKeyUniqueid());
-                    userDBHandler.addLocation(locationHolder, userDBHelper);
+                    UserDBLocationHelper userDBLocationHelper = new UserDBLocationHelper(location);
+                    String userUniqueId = userDBHandler.getKeyUniqueid();
+                    userDBHandler.addLocation(userDBLocationHelper, userUniqueId);
                     int lastId = userDBHandler.getLastId();
 
                     final String uniqueId = userDBHandler.getKeyUniqueid();
@@ -308,7 +309,6 @@ public class LocationService extends Service {
     }
 
     //----------------------------------------------------------------------------------------------Bluetooth Logging
-
     public BluetoothDataInput bluetoothDataInput (String macAddress, float distance, int createdAt){
         BluetoothDataInput bluetoothDataInput = BluetoothDataInput.builder()
                 .macAddress(macAddress)
@@ -429,8 +429,8 @@ public class LocationService extends Service {
                         Integer bluetoothTime = stringToInt.convertToInt(dateTime);
 
                         UserDBBluetoothHelper userDBBluetoothHelper = new UserDBBluetoothHelper(address, distance, bluetoothTime);
-                        UserDBHelper userDBHelper = new UserDBHelper(userDBHandler.getKeyUniqueid());
-                        userDBHandler.addScannedBluetooth(userDBBluetoothHelper, userDBHelper);
+                        String userUniqueId = userDBHandler.getKeyUniqueid();
+                        userDBHandler.addScannedBluetooth(userDBBluetoothHelper, userUniqueId);
 
                         final String uniqueId = userDBHandler.getKeyUniqueid();
 
