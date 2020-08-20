@@ -99,7 +99,7 @@
                         style="@style/viewParent.headerText.HomeCardTitle" />
 
                     <TextView
-                        android:text="Tips and Reminders on how \nto stay safe during pandemic"
+                        android:text="Tips and Reminders on how \nto stay safe"
                         android:fontFamily="@font/montserrat_bold"
                         android:layout_below="@id/textViewProtectYourself"
                         style="@style/viewParent.headerText.homeCardContent" />
@@ -187,7 +187,7 @@
                         style="@style/viewParent.headerText.HomeCardTitle" />
 
                     <TextView
-                        android:text="Update symptoms of possible \nCOVID-19 infection"
+                        android:text="Feeling under the weather?\nUpdate your symptoms"
                         android:fontFamily="@font/montserrat_bold"
                         android:layout_below="@id/textViewSymptoms"
                         style="@style/viewParent.headerText.homeCardContent" />
@@ -224,13 +224,13 @@
 
                     <TextView
                         android:id="@+id/textViewContactTracing"
-                        android:text="Contact Tracing"
+                        android:text="Interactions"
                         android:fontFamily="@font/montserrat_bold"
                         android:layout_alignParentTop="true"
                         style="@style/viewParent.headerText.HomeCardTitle" />
 
                     <TextView
-                        android:text="Manually report possible contacts \nduring travel or movement"
+                        android:text="Manually report possible interactions \nfrom other people"
                         android:fontFamily="@font/montserrat_bold"
                         android:layout_below="@id/textViewContactTracing"
                         style="@style/viewParent.headerText.homeCardContent" />
@@ -272,7 +272,7 @@
                         style="@style/viewParent.headerText.HomeCardTitle" />
 
                     <TextView
-                        android:text="What's your opinion about the \ncommunity quarantine? Take this \nsurvey and express your thought"
+                        android:text="What's your opinion about the GCQ? Take \nthe survey and express your thought"
                         android:fontFamily="@font/montserrat_bold"
                         android:layout_below="@id/textViewCQP"
                         style="@style/viewParent.headerText.homeCardContent" />
@@ -318,7 +318,7 @@
                         style="@style/viewParent.headerText.homeCardContent"
                         android:layout_below="@id/textViewWebsite"
                         android:fontFamily="@font/montserrat_bold"
-                        android:text="Get additional information about \nthe current situation of COVID-19\n pandemic" />
+                        android:text="Get additional information about \nthe current situation" />
 
                     <ImageView
                         android:id="@+id/imageWebsite"

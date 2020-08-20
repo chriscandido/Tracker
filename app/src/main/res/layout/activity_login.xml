@@ -23,8 +23,7 @@
             android:layout_height="150dp"
             android:src="@drawable/appicon"
             android:layout_marginTop="50dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp" />
+            android:layout_marginStart="15dp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -35,7 +34,7 @@
                 android:id="@+id/textView_Contra"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Contra +"
+                android:text="@string/app_name"
                 android:textSize="30sp"
                 android:fontFamily="@font/montserrat_bold"
                 android:textColor="@color/colorSecondary"
@@ -46,7 +45,7 @@
                 android:id="@+id/textView_Motto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Your Protection Against"
+                android:text="@string/text_AppDescription"
                 android:textSize="12sp"
                 android:textColor="@color/colorNeutral"
                 android:fontFamily="@font/montserrat"
@@ -56,7 +55,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="COVID-19"
+                android:text=""
                 android:textColor="@color/colorNegative"
                 android:textSize="20sp"
                 android:fontFamily="@font/montserrat"
@@ -84,8 +83,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputEditText_dateOfBirth"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="+63"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!--Subscribe Button-->
@@ -104,5 +105,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_dateOfBirth" />
+
+    <Button
+        android:id="@+id/button_registerLogin"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:text="Register"
+        android:textColor="#fff"
+        android:paddingBottom="10dp"
+        app:cornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_subscribe" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

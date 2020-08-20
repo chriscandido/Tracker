@@ -5,7 +5,7 @@
     <!--Essentials-->
     <string name="AppTitle">ConTra +</string>
     <string name="app_name">ConTra +</string>
-    <string name="text_AppDescription">A Contact Tracing Application for COVID-19 Pandemic</string>
+    <string name="text_AppDescription">A Community Interactions Application</string>
 
     <!--Home Page-->
     <string name="start_logging">START LOGGING</string>

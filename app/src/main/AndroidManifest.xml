@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.envisage.tracker">
+    package="com.upd.contraplus2020">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
@@ -24,7 +23,7 @@
         android:theme="@style/AppTheme">
         <!-- Activities -->
         <activity
-            android:name=".activity.SplashActivity"
+            android:name="com.upd.contraplus2020.activity.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,44 +31,51 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.InformationActivity" />
-        <activity android:name=".activity.SliderAdapterActivity" />
-        <activity android:name=".activity.EulaActivity" />
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".DashboardActivity" />
-        <activity android:name=".activity.UpdateSymptomsActivity" />
-        <activity android:name=".activity.MapActivity" />
-        <activity android:name=".activity.StaySafeActivity" />
-        <activity android:name=".activity.ContactTracingActivity" />
-        <activity android:name=".activity.RegisterActivity"/>
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".activity.EditProfileActivity" />
+
+        <activity android:name="com.upd.contraplus2020.MainActivity" />
+        <activity android:name="com.upd.contraplus2020.DashboardActivity" />
+        <activity android:name="com.upd.contraplus2020.ProfileActivity" />
+
+        <activity android:name="com.upd.contraplus2020.activity.InformationActivity" />
+        <activity android:name="com.upd.contraplus2020.activity.SliderAdapterActivity" />
+        <activity android:name="com.upd.contraplus2020.activity.EulaActivity" />
+        <activity android:name="com.upd.contraplus2020.activity.LoginActivity" />
+        <activity android:name="com.upd.contraplus2020.activity.UpdateSymptomsActivity" />
+        <activity android:name="com.upd.contraplus2020.activity.MapActivity" />
+        <activity android:name="com.upd.contraplus2020.activity.StaySafeActivity" />
+        <activity android:name="com.upd.contraplus2020.activity.ManualTracingActivity" />
+        <activity android:name="com.upd.contraplus2020.activity.RegisterActivity"/>
+        <activity android:name="com.upd.contraplus2020.activity.EditProfileActivity" />
         <activity
-            android:name=".fragment.GoogleMapFragment"
+            android:name="com.upd.contraplus2020.fragment.GoogleMapFragment"
             android:label="Google Maps" />
+
         <!-- Service -->
         <service
-            android:name=".service.LocationService"
+            android:name="com.upd.contraplus2020.service.LocationService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".service.ApolloService"
+            android:name="com.upd.contraplus2020.service.ApolloService"
             android:enabled="true"
             android:exported="false" />
+
         <!-- Receiver -->
         <receiver
-            android:name=".activity.BootBroadcastReceiver"
+            android:name="com.upd.contraplus2020.activity.BootBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <!-- meta data -->
         <meta-data
             android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" /> <!-- Google API Key -->
+            android:resource="@array/preloaded_fonts" />
+
+        <!-- Google API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

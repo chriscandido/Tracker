@@ -45,7 +45,7 @@
                 android:id="@+id/textView_Motto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Your Protection Against"
+                android:text="@string/text_AppDescription"
                 android:textSize="12sp"
                 android:textColor="@color/colorNeutral"
                 android:fontFamily="@font/montserrat"
@@ -55,7 +55,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="COVID-19"
+                android:text=""
                 android:textColor="@color/colorNegative"
                 android:textSize="20sp"
                 android:fontFamily="@font/montserrat"

@@ -288,7 +288,7 @@
                     android:id="@+id/radioGroup_profileTestingResults"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:layout_gravity="left">
                     <RadioButton
                         android:id="@+id/radioButton_profileTestingResults_Positive"
