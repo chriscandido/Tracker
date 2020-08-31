@@ -271,13 +271,13 @@
             android:backgroundTint="@color/colorSecondary"
             android:text="Agree and Continue"
             android:textColor="@color/colorWhite"
-            android:onClick="goToLogin"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="30dp"
             android:layout_below="@+id/checkbox_agreement"
             android:visibility="invisible"
+            android:onClick="goToRegister"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

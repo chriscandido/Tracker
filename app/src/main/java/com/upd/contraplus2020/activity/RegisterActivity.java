@@ -2,6 +2,7 @@ package com.upd.contraplus2020.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,11 +11,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Input;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.upd.contraplus2020.MainActivity;
 import com.upd.contraplus2020.R;
 import com.upd.contraplus2020.db.UserDBHandler;
 import com.upd.contraplus2020.db.UserDBHelper;
@@ -49,6 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
     String db_gender = "";
     String db_testResult = "";
 
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
         userDBHandler.initializeDB();
 
         initViews();
+        initPreferences();
 
         button_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +71,8 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 } else {
                     insertToServer();
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    //postDataToDatabase();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     Log.v("SUBMIT", "[#] RegisterActivity.java - UNIQUE ID: " + userDBHandler.getKeyUniqueid());
                 }
@@ -74,6 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    //----------------------------------------------------------------------------------------------Initialize variables
     private void initViews () {
         firstName = findViewById(R.id.textInputLayout_registerFirstname);
         lastName = findViewById(R.id.textInputLayout_registerLastname);
@@ -114,6 +122,72 @@ public class RegisterActivity extends AppCompatActivity {
                 db_pum = 0;
                 db_pui = 0;
             }
+        }
+    }
+
+    private void setDetails() {
+        //Firstname
+        String temp_firstName = firstName.getEditText().getText().toString();
+        if (temp_firstName.isEmpty()){
+            db_firstName = "N/A";
+        } else {
+            db_firstName = firstName.getEditText().getText().toString();
+        }
+
+        //Lastname
+        String temp_lastName = lastName.getEditText().getText().toString();
+        if (temp_lastName.isEmpty()){
+            db_lastName = "N/A";
+        } else {
+            db_lastName = lastName.getEditText().getText().toString();
+        }
+
+        //Age
+        String temp_age = age.getEditText().getText().toString();
+        if (temp_age.isEmpty()){
+            db_age = 0;
+        } else {
+            db_age = Integer.parseInt(age.getEditText().getText().toString());
+        }
+
+        //Contact Number
+        String temp_contactNumber = contactNumber.getEditText().getText().toString();
+        if (temp_contactNumber.isEmpty()){
+            db_contactNumber = "N/A";
+        } else {
+            db_contactNumber = contactNumber.getEditText().getText().toString();
+        }
+
+        //Permanent Address
+        String temp_permanentAddress = permanentAddress.getEditText().getText().toString();
+        if (temp_permanentAddress.isEmpty()){
+            db_permanentAddress = "N/A";
+        } else {
+            db_permanentAddress = permanentAddress.getEditText().getText().toString();
+        }
+
+        //Permanent Mun or City
+        String temp_permanentMunOrCity = permanentMunOrCity.getEditText().getText().toString();
+        if (temp_permanentMunOrCity.isEmpty()){
+            db_permanentMunOrCity = "N/A";
+        } else {
+            db_permanentMunOrCity = permanentMunOrCity.getEditText().getText().toString();
+        }
+
+        //Present Address
+        String temp_presentAddress = presentAddress.getEditText().getText().toString();
+        if (temp_presentAddress.isEmpty()){
+            db_presentAddress = "N/A";
+        } else {
+            db_presentAddress = presentAddress.getEditText().getText().toString();
+        }
+
+        //Present Mun or City
+        String temp_presentMunOrCity = presentMunOrCity.getEditText().getText().toString();
+        if (temp_presentMunOrCity.isEmpty()) {
+            db_presentMunOrCity = "N/A";
+        } else {
+            db_presentMunOrCity = presentMunOrCity.getEditText().getText().toString();
         }
     }
 
@@ -172,6 +246,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     //----------------------------------------------------------------------------------------------add to local db
     private void insertToDB (String db_uniqueId) {
+
         userDBHelper = new UserDBHelper(db_uniqueId,
                 db_firstName,
                 db_lastName,
@@ -191,7 +266,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //----------------------------------------------------------------------------------------------add to server db
-
     public UserInput addUserData (_UserProfileInput profileInput){
         UserInput userInput = UserInput.builder()
                 .profile(profileInput)
@@ -202,15 +276,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public _UserProfileInput profileInput (){
 
-        db_firstName = firstName.getEditText().getText().toString();
-        db_lastName = lastName.getEditText().getText().toString();
-        db_age = Integer.parseInt(age.getEditText().getText().toString());
-        db_contactNumber = contactNumber.getEditText().getText().toString();
-        db_permanentAddress = permanentAddress.getEditText().getText().toString();
-        db_permanentMunOrCity = permanentMunOrCity.getEditText().getText().toString();
-        db_presentAddress = presentAddress.getEditText().getText().toString();
-        db_presentMunOrCity = presentMunOrCity.getEditText().getText().toString();
-
+        setDetails();
         getAddress();
         getGender();
         getTestResults();
@@ -236,16 +302,14 @@ public class RegisterActivity extends AppCompatActivity {
 
         UserInput userInput = addUserData(profileInput());
 
-        //insertToDB("c9d0ec09-a188-42a0-8b3f-fdfe383c7c46");
-
         ApolloClient.setupApollo().mutate(AddUserMutation.builder().user(userInput).build())
                 .enqueue(new ApolloCall.Callback<AddUserMutation.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<AddUserMutation.Data> response) {
                         assert response.data() != null;
                         String uid = response.data().addUser().id();
-                        //insertToDB("c9d0ec09-a188-42a0-8b3f-fdfe383c7c46");
-                        insertToDB(uid);
+                        insertToDB("c9d0ec09-a188-42a0-8b3f-fdfe383c7c46");
+                        //insertToDB(uid);
                         Log.v("SERVER RESPONSE", "[#] RegisterActivity.java - RESPONSE: " + response.data().toString());
                     }
 
@@ -258,4 +322,27 @@ public class RegisterActivity extends AppCompatActivity {
                 db_firstName + " " + db_lastName + "\n" + db_age + "\n" + db_presentAddress + "\n"
                 + db_pui + "\n" + db_pum + "\n");
     }
+
+    //----------------------------------------------------------------------------------------------Preference
+    public void initPreferences(){
+        PreferenceActivity preferenceActivity = new PreferenceActivity();
+        if (preferenceActivity.getUniqueId(this) != null){
+            Log.v("Response", "[#] PreferenceActivity.java ");
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        }
+    }
+    /**
+    private void postDataToDatabase(){
+        String new_uid = userDBHandler.getKeyUniqueid();
+        if (userDBHandler.checkUniqueId(new_uid)){
+            PreferenceActivity.saveUniqueId(new_uid, this);
+            Intent intent = new Intent (getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            Log.d("REGISTER RESPONSE", "[#] RegisterActivity.java - SUCCESS! UNIQUE ID added to Database: " + new_uid);
+            finish();
+        } else {
+            Toast.makeText(context, "Register first before subscribing to the application", Toast.LENGTH_LONG).show();
+        }
+    }**/
 }

@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-
     TextInputLayout firstName, lastName, age, contactNumber, permanentAddress, permanentMunOrCity, presentAddress, presentMunOrCity;
     RadioButton male, female, others, positive, negative, waiting, none;
     CheckBox sameAsPermanentAddress, pum, pui;
@@ -71,7 +70,7 @@ public class EditProfileActivity extends AppCompatActivity {
             });
     }
 
-
+    //----------------------------------------------------------------------------------------------Initialize variables
     private void initViews () {
         firstName = findViewById(R.id.textInputLayout_profileFirstname);
         lastName = findViewById(R.id.textInputLayout_profileLastname);
@@ -115,7 +114,75 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void getGender(){
+    //----------------------------------------------------------------------------------------------Update personal details of user
+    private void setDetails(){
+        //Firstname
+        String temp_firstName = firstName.getEditText().getText().toString();
+        if (temp_firstName.isEmpty()){
+            db_firstName = userDBHandler.getLastUserProfile().getFirstName();
+        } else {
+            db_firstName = firstName.getEditText().getText().toString();
+        }
+
+
+        //Lastname
+        String temp_lastName = lastName.getEditText().getText().toString();
+        if (temp_lastName.isEmpty()) {
+            db_lastName = userDBHandler.getLastUserProfile().getLastName();
+        } else {
+            db_lastName = lastName.getEditText().getText().toString();
+        }
+
+        //Age
+        String temp_age = age.getEditText().getText().toString();
+        if (temp_age.isEmpty()){
+            db_age = userDBHandler.getLastUserProfile().getAge();
+        } else {
+            db_age = Integer.parseInt(age.getEditText().getText().toString());
+        }
+
+        //Contact Number
+        String temp_contactNumber = contactNumber.getEditText().getText().toString();
+        if (temp_contactNumber.isEmpty()) {
+            db_contactNumber = userDBHandler.getLastUserProfile().getContactNumber();
+        } else {
+            db_contactNumber = contactNumber.getEditText().getText().toString();
+        }
+
+        //Permanent Address
+        String temp_permanentAddress = permanentAddress.getEditText().getText().toString();
+        if (temp_permanentAddress.isEmpty()) {
+            db_permanentAddress = userDBHandler.getLastUserProfile().getPermanentAddress();
+        } else {
+            db_permanentAddress = permanentAddress.getEditText().getText().toString();
+        }
+
+        //Permanent Municipality or City
+        String temp_permanentMunOrCity = permanentMunOrCity.getEditText().getText().toString();
+        if (temp_permanentMunOrCity.isEmpty()) {
+            db_permanentMunOrCity = userDBHandler.getLastUserProfile().getMunicipalityOrCity();
+        } else {
+            db_permanentMunOrCity = permanentMunOrCity.getEditText().getText().toString();
+        }
+
+        //Present Address
+        String temp_presentAddress = presentAddress.getEditText().getText().toString();
+        if (temp_presentAddress.isEmpty()) {
+            db_presentAddress = userDBHandler.getLastUserProfile().getPresentAddress();
+        } else {
+            db_presentAddress = presentAddress.getEditText().getText().toString();
+        }
+
+        //Present Municipality or City
+        String temp_presentMunOrCity = presentMunOrCity.getEditText().getText().toString();
+        if (temp_presentMunOrCity.isEmpty()) {
+            db_presentMunOrCity = userDBHandler.getLastUserProfile().getPresent_municipalityOrCity();
+        } else {
+            db_presentMunOrCity = presentMunOrCity.getEditText().getText().toString();
+        }
+    }
+
+    private void setGender(){
         if (male.isChecked()){
             db_gender = male.getText().toString();
         } else if (female.isChecked()) {
@@ -125,7 +192,7 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void getTestResults() {
+    private void setTestResults() {
         if (positive.isChecked()){
             db_testResult = positive.getText().toString();
         } else if (negative.isChecked()) {
@@ -137,7 +204,7 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void getAddress() {
+    private void setAddress() {
         if (sameAsPermanentAddress.isChecked()){
             db_presentAddress = db_permanentAddress;
             db_presentMunOrCity = db_permanentMunOrCity;
@@ -147,7 +214,7 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    public boolean intToBoolean (Integer input) {
+    public boolean intToBoolean(Integer input) {
         if (input == 1) {
             return true;
         } else {
@@ -155,24 +222,12 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    //----------------------------------------------------------------------------------------------
-    private void validateUserProfile() {
 
-    }
-
-    private void updateUserDB () {
-        db_firstName = firstName.getEditText().getText().toString();
-        db_lastName = lastName.getEditText().getText().toString();
-        db_age = Integer.parseInt(age.getEditText().getText().toString());
-        db_contactNumber = contactNumber.getEditText().getText().toString();
-        db_permanentAddress = permanentAddress.getEditText().getText().toString();
-        db_permanentMunOrCity = permanentMunOrCity.getEditText().getText().toString();
-        db_presentAddress = presentAddress.getEditText().getText().toString();
-        db_presentMunOrCity = presentMunOrCity.getEditText().getText().toString();
-
-        getAddress();
-        getGender();
-        getTestResults();
+    private void updateUserDB() {
+        setDetails();
+        setAddress();
+        setGender();
+        setTestResults();
 
         String lastID = String.valueOf(userDBHandler.getLastUserId());
 
@@ -202,18 +257,11 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public _UserProfileInput profileInput () {
-        db_firstName = firstName.getEditText().getText().toString();
-        db_lastName = lastName.getEditText().getText().toString();
-        db_age = Integer.parseInt(age.getEditText().getText().toString());
-        db_contactNumber = contactNumber.getEditText().getText().toString();
-        db_permanentAddress = permanentAddress.getEditText().getText().toString();
-        db_permanentMunOrCity = permanentMunOrCity.getEditText().getText().toString();
-        db_presentAddress = presentAddress.getEditText().getText().toString();
-        db_presentMunOrCity = presentMunOrCity.getEditText().getText().toString();
 
-        getAddress();
-        getGender();
-        getTestResults();
+        setDetails();
+        setAddress();
+        setGender();
+        setTestResults();
 
         _UserProfileInput userProfileInput = _UserProfileInput.builder()
                 .firstName(db_firstName)
@@ -229,24 +277,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 .gender(db_gender)
                 .testResult(db_testResult)
                 .build();
-        /*
-        _UserProfileInput userProfileInput = _UserProfileInput.builder()
-                .firstNameInput(Input.optional(db_firstName))
-                .lastNameInput(Input.optional(db_lastName))
-                .ageInput(Input.optional(db_age))
-                .contactNumberInput(Input.optional(db_contactNumber))
-                .permanentAddressInput(Input.optional(db_permanentAddress))
-                .municipalityOrCityInput(Input.optional(db_permanentMunOrCity))
-                .presentAddressInput(Input.optional(db_presentAddress))
-                .presentMunicipalityOrCityInput(Input.optional(db_presentMunOrCity))
-                .isSuspectedOfContactInput(Input.optional(intToBoolean(db_pum)))
-                .isPUIInput(Input.optional(intToBoolean(db_pui)))
-                .genderInput(Input.optional(db_gender))
-                .testResultInput(Input.optional(db_testResult))
-                .build();*/
+
         return userProfileInput;
     }
 
+    //----------------------------------------------------------------------------------------------Update server
     public void updateServer (){
 
         String uniqueid = userDBHandler.getKeyUniqueid();

@@ -155,6 +155,7 @@ public class MapActivity extends AppCompatActivity {
         });
     }
 
+    //----------------------------------------------------------------------------------------------Set camera position
     public void setCameraPosition(MapboxMap mapboxMap){
         location = userDBHandler.getLastLocation().getLocation();
         if (location != null) {
@@ -162,8 +163,8 @@ public class MapActivity extends AppCompatActivity {
                     " && " + location.getLongitude());
             CameraPosition position = new CameraPosition.Builder()
                     .target(new LatLng(location.getLatitude(), location.getLongitude())) // Sets the new camera position
-                    .zoom(17) // Sets the zoom
-                    .bearing(-180) // Rotate the camera
+                    .zoom(14) // Sets the zoom
+                    .bearing(90) // Rotate the camera
                     .tilt(45) // Set the camera tilt
                     .build(); // Creates a CameraPosition from the builder
             mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 15000);
@@ -183,6 +184,7 @@ public class MapActivity extends AppCompatActivity {
         return IconFactory.getInstance(context).fromBitmap(bitmap);
     }
 
+    //----------------------------------------------------------------------------------------------Add marker to map
     private void postMarker(@NonNull final FeatureCollection featureCollection) {
 
         mStyle.addSource (new GeoJsonSource("Features", featureCollection, new GeoJsonOptions().withCluster(true)
@@ -192,6 +194,7 @@ public class MapActivity extends AppCompatActivity {
         button_Hospital.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                map.removeAnnotations();
                 if (map != null) {
                     assert featureCollection.features() != null;
                     int coll = featureCollection.features().size();
@@ -224,9 +227,11 @@ public class MapActivity extends AppCompatActivity {
             }
 
         });
+
         button_Clinic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                map.removeAnnotations();
                 if (map != null) {
                     assert featureCollection.features() != null;
                     int coll = featureCollection.features().size();
@@ -256,12 +261,15 @@ public class MapActivity extends AppCompatActivity {
                         }
                     }
                 }
-
             }
         });
+
+
+
         button_Pharmacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                map.removeAnnotations();
                 if (map != null) {
                     assert featureCollection.features() != null;
                     int coll = featureCollection.features().size();
@@ -291,11 +299,12 @@ public class MapActivity extends AppCompatActivity {
                         }
                     }
                 }
-
             }
         });
+
     }
 
+    //----------------------------------------------------------------------------------------------Load GeoJson file from asset folder
     private static class LoadGeoJson extends AsyncTask<Void, Void, FeatureCollection> {
 
         private WeakReference<MapActivity> weakReference;

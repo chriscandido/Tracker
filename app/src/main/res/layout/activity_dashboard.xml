@@ -100,7 +100,7 @@
 
                     <TextView
                         android:text="Tips and Reminders on how \nto stay safe"
-                        android:fontFamily="@font/montserrat_bold"
+                        android:fontFamily="@font/montserrat"
                         android:layout_below="@id/textViewProtectYourself"
                         style="@style/viewParent.headerText.homeCardContent" />
 
@@ -144,7 +144,7 @@
 
                     <TextView
                         android:text="Map your journey and access \nlocation of different medical \nfacilities"
-                        android:fontFamily="@font/montserrat_bold"
+                        android:fontFamily="@font/montserrat"
                         android:layout_below="@id/textViewMapActivity"
                         style="@style/viewParent.headerText.homeCardContent" />
 
@@ -188,7 +188,7 @@
 
                     <TextView
                         android:text="Feeling under the weather?\nUpdate your symptoms"
-                        android:fontFamily="@font/montserrat_bold"
+                        android:fontFamily="@font/montserrat"
                         android:layout_below="@id/textViewSymptoms"
                         style="@style/viewParent.headerText.homeCardContent" />
 
@@ -231,7 +231,7 @@
 
                     <TextView
                         android:text="Manually report possible interactions \nfrom other people"
-                        android:fontFamily="@font/montserrat_bold"
+                        android:fontFamily="@font/montserrat"
                         android:layout_below="@id/textViewContactTracing"
                         style="@style/viewParent.headerText.homeCardContent" />
 
@@ -273,7 +273,7 @@
 
                     <TextView
                         android:text="What's your opinion about the GCQ? Take \nthe survey and express your thought"
-                        android:fontFamily="@font/montserrat_bold"
+                        android:fontFamily="@font/montserrat"
                         android:layout_below="@id/textViewCQP"
                         style="@style/viewParent.headerText.homeCardContent" />
 
@@ -317,7 +317,7 @@
                     <TextView
                         style="@style/viewParent.headerText.homeCardContent"
                         android:layout_below="@id/textViewWebsite"
-                        android:fontFamily="@font/montserrat_bold"
+                        android:fontFamily="@font/montserrat"
                         android:text="Get additional information about \nthe current situation" />
 
                     <ImageView
@@ -339,10 +339,10 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="About"
-                android:textSize="15sp"
+                android:textSize="12sp"
                 android:fontFamily="@font/montserrat"
                 app:cornerRadius="5dp"
-                app:backgroundTint="@android:color/holo_green_dark"/>
+                app:backgroundTint="@android:color/holo_blue_dark"/>
 
             <!--Legal Button-->
             <com.google.android.material.button.MaterialButton
@@ -351,7 +351,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="Legal and Privacy"
-                android:textSize="15sp"
+                android:textSize="12sp"
                 android:fontFamily="@font/montserrat"
                 app:cornerRadius="5dp"
                 app:backgroundTint="@android:color/holo_blue_dark"/>

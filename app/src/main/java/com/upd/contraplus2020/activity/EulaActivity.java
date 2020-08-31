@@ -48,15 +48,15 @@ public class EulaActivity extends AppCompatActivity {
         Boolean isFirstRun = getSharedPreferences("Agreement", MODE_PRIVATE)
                 .getBoolean("isFirstRun", true);
         if (!isFirstRun){
-            Intent intent = new Intent(EulaActivity.this, LoginActivity.class);
+            Intent intent = new Intent(EulaActivity.this, RegisterActivity.class);
             startActivity(intent);
             finish();
         }
         getSharedPreferences("Agreement", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).apply();
     }
 
-    public void goToLogin(View view) {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+    public void goToRegister(View view) {
+        Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
         startActivity(intent);
     }
 }

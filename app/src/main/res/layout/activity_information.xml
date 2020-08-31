@@ -8,6 +8,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.InformationActivity">
 
+
+
     <!-- CardView Options-->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -22,6 +24,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/agreement_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Information"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/montserrat_bold"
+                android:background="@color/colorWhite"
+                android:paddingTop="30dp"
+                android:paddingBottom="15dp"
+                android:textSize="25sp"
+                android:textAlignment="center"
+                android:gravity="center_horizontal" />
 
             <!-- Purge Covid-19-->
             <androidx.cardview.widget.CardView

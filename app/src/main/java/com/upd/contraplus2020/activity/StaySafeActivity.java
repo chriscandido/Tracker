@@ -9,7 +9,6 @@ import com.upd.contraplus2020.R;
 
 public class StaySafeActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

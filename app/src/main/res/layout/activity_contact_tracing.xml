@@ -5,15 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ContactTracingActivity">
+    tools:context=".activity.ManualTracingActivity">
 
     <TextView
         android:id="@+id/textView_Contacts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
+        android:paddingTop="35dp"
         android:fontFamily="@font/montserrat_bold"
         android:text="Contacts"
         android:textSize="25sp"
@@ -45,6 +45,7 @@
         android:layout_marginTop="20dp"
         android:text="Pin location to map"
         android:textColor="@color/colorSecondary"
+        android:fontFamily="@font/montserrat"
         app:icon="@drawable/ic_add_location_black_24dp"
         app:iconTint="@color/colorSecondary"
         app:strokeColor="@color/colorSecondary"

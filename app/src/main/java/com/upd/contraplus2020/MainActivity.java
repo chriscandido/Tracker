@@ -40,18 +40,15 @@ public class MainActivity extends AppCompatActivity {
     // Used in checking for runtime permissions.
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private static final int LOCATION_PERMISSION_ID = 1001;
+
     UserDBHandler userDBHandler = new UserDBHandler(this);
 
     private LocationService locationService;
     private boolean mBound = false;
 
-    String uid;
-
     Button button_Start, button_Stop;
     ImageButton button_Dashboard;
     RippleBackground rippleBackground;
-
-    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //----------------------------------------------------------------------------------------------Show location settings
     private void displayLocationSettingsRequest(Context context) {
         GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API).build();

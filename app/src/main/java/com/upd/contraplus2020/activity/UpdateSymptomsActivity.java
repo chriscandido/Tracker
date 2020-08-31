@@ -166,6 +166,7 @@ public class UpdateSymptomsActivity extends AppCompatActivity {
        }
    }
 
+   //-----------------------------------------------------------------------------------------------Add to local db
    private void insertToDB(List<String> userSymptoms, Integer time){
         Gson gson = new Gson();
         String inputSymptoms = gson.toJson(userSymptoms);
@@ -201,6 +202,7 @@ public class UpdateSymptomsActivity extends AppCompatActivity {
         return symptomsListInput;
    }
 
+   //-----------------------------------------------------------------------------------------------Add to server
    public void insertToServer (List<String> userSymptoms, Integer createdAt, String uid){
 
         SymptomsInput symptomsInput = symptomsInput(userSymptoms, createdAt);

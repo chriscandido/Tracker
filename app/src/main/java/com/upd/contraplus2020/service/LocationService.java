@@ -1,5 +1,6 @@
 package com.upd.contraplus2020.service;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Notification;
@@ -33,9 +34,11 @@ import android.os.ParcelUuid;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
 import com.apollographql.apollo.ApolloCall;
@@ -112,20 +115,21 @@ public class LocationService extends Service {
     //Google Nearby API
     GoogleApiClient googleApiClient;
 
-    public LocationService(){ }
+    public LocationService() {
+    }
 
-    public LocationService(Context context){
+    public LocationService(Context context) {
         this.context = context;
     }
 
     public class LocalBinder extends Binder {
-        public LocationService getServiceInstance(){
+        public LocationService getServiceInstance() {
             return LocationService.this;
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void onCreate(){
+    public void onCreate() {
         super.onCreate();
 
         currentTime = System.currentTimeMillis();
@@ -141,7 +145,7 @@ public class LocationService extends Service {
 
         mNotificationManager = (NotificationManager) getSystemService((NOTIFICATION_SERVICE));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForeground(0, getNotification());
         }
 
@@ -150,28 +154,28 @@ public class LocationService extends Service {
 
     @Nullable
     @Override
-    public IBinder onBind(Intent intent){
+    public IBinder onBind(Intent intent) {
         Log.i(TAG, "in onBind()");
         stopForeground(true);
         return mBinder;
     }
 
-    public void onRebind(Intent intent){
+    public void onRebind(Intent intent) {
         Log.i(TAG, "in onRebind()");
         stopForeground(true);
         super.onRebind(intent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public int onStartCommand(Intent intent, int flags, int startId){
+    public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        if (intent != null){
+        if (intent != null) {
             //startLocationListener();
             advertising();
             startTrackingCallback();
             sendBluetoothRequest();
             Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
-        } else  {
+        } else {
             stopService();
         }
         return START_STICKY;
@@ -224,9 +228,9 @@ public class LocationService extends Service {
         return notification;
     }
 
-    public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
-        if (requestCode == LOCATION_PERMISSION_ID && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            if (grantResults.length <= 0){
+    public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == LOCATION_PERMISSION_ID && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length <= 0) {
                 //startLocationListener();
                 startTrackingCallback();
             }
@@ -236,7 +240,7 @@ public class LocationService extends Service {
     }
 
     //----------------------------------------------------------------------------------------------GPS Logging
-    private LocationRequest setupLocationRequest(){
+    private LocationRequest setupLocationRequest() {
         LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(60 * 1000);
         locationRequest.setFastestInterval(5 * 1000);
@@ -244,19 +248,29 @@ public class LocationService extends Service {
         return locationRequest;
     }
 
-    private LocationSettingsRequest buildLocationSettingsRequest(){
+    private LocationSettingsRequest buildLocationSettingsRequest() {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
         mLocationSettingsRequest = builder.build();
         return mLocationSettingsRequest;
     }
 
-    public void startTrackingCallback(){
+    public void startTrackingCallback() {
         Toast.makeText(this, "Requesting GPS", Toast.LENGTH_SHORT).show();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mLocationCallback = setupLocationCallback();
         mLocationRequest = setupLocationRequest();
         buildLocationSettingsRequest();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
 
     }

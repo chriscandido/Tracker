@@ -25,6 +25,17 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_actionButton_routeHistory"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:backgroundTint="@color/colorYellow"
+            android:src="@drawable/userlocation"
+            app:fabSize="mini"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_actionButton_Pharmacy"
             style="@style/Widget.MaterialComponents.FloatingActionButton"
             android:layout_width="wrap_content"
@@ -60,12 +71,12 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_action_button"
             style="@style/Widget.MaterialComponents.FloatingActionButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="@color/colorYellow"
             android:src="@drawable/ic_add_black_24dp"
-            app:fabSize="normal"/>
+            app:fabSize="normal" />
 
     </LinearLayout>
 

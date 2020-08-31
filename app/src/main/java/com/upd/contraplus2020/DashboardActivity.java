@@ -38,6 +38,7 @@ public class DashboardActivity extends AppCompatActivity {
         cardView_updateSymptoms.setOnTouchListener(new onTouch());
     }
 
+    //----------------------------------------------------------------------------------------------Click animation
     public class onTouch implements View.OnTouchListener{
         @Override
         public boolean onTouch(View view, MotionEvent event){

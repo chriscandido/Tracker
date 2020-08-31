@@ -121,7 +121,8 @@
         android:id="@+id/textview_UserProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
         android:clickable="true"
         android:focusable="true"
         android:fontFamily="@font/montserrat"
@@ -131,6 +132,7 @@
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView_profileIcon"
         app:layout_constraintStart_toEndOf="@+id/imageView_profileIcon"
-        app:layout_constraintTop_toTopOf="@+id/imageView_profileIcon" />
+        app:layout_constraintTop_toTopOf="@+id/imageView_profileIcon"
+        app:layout_constraintVertical_bias="0.333" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

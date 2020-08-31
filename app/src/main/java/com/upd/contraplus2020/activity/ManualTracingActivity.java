@@ -53,11 +53,11 @@ public class ManualTracingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_tracing);
 
-        // date selection with calendar dialog
+        //Date selection with calendar dialog
         selectDate = findViewById(R.id.select_date_btn);
         date = findViewById(R.id.date_selected);
 
-        //Edite text number
+        //Edit text number
         number_text = findViewById(R.id.editText_num);
 
         selectDate.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +81,7 @@ public class ManualTracingActivity extends AppCompatActivity {
 
         linearLayout = (LinearLayout) findViewById(R.id.linearLayout_mobileNumber);
 
-        // google maps button for pinning location
+        //Google maps button for pinning location
         google_maps_btn = findViewById(R.id.googlemap_btn);
         button_submit = findViewById(R.id.submit_btn);
         button_addContact = findViewById(R.id.add_contact_btn);
@@ -89,7 +89,7 @@ public class ManualTracingActivity extends AppCompatActivity {
         onClick();
 
         location_text = findViewById(R.id.location_text);
-        // get location data from google maps activity
+        //get location data from google maps activity
         contactLocation = getIntent().getStringExtra("location_address");
         location_text.setText(contactLocation);
 
@@ -157,6 +157,7 @@ public class ManualTracingActivity extends AppCompatActivity {
         });
     }
 
+    //----------------------------------------------------------------------------------------------Add to local db
     public void insertToDB(List<String> contactNumber, String address, String date){
         Gson gson = new Gson();
         String inputContactNumber = gson.toJson(contactNumber);

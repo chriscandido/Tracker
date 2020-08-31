@@ -39,7 +39,6 @@
         <activity android:name="com.upd.contraplus2020.activity.InformationActivity" />
         <activity android:name="com.upd.contraplus2020.activity.SliderAdapterActivity" />
         <activity android:name="com.upd.contraplus2020.activity.EulaActivity" />
-        <activity android:name="com.upd.contraplus2020.activity.LoginActivity" />
         <activity android:name="com.upd.contraplus2020.activity.UpdateSymptomsActivity" />
         <activity android:name="com.upd.contraplus2020.activity.MapActivity" />
         <activity android:name="com.upd.contraplus2020.activity.StaySafeActivity" />
