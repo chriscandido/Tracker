@@ -7,10 +7,12 @@ import androidx.core.widget.NestedScrollView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.google.android.material.button.MaterialButton;
 import com.upd.contraplus2020.activity.ManualTracingActivity;
 import com.upd.contraplus2020.activity.InformationActivity;
 import com.upd.contraplus2020.activity.MapActivity;
@@ -20,6 +22,7 @@ import com.upd.contraplus2020.activity.UpdateSymptomsActivity;
 public class DashboardActivity extends AppCompatActivity {
 
     CardView cardView_staySafe, cardView_mapActivity, cardView_updateSymptoms;
+    MaterialButton button_dashboardAbout, button_dashboardLegal;
     NestedScrollView nestedScrollView;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -31,11 +34,15 @@ public class DashboardActivity extends AppCompatActivity {
         cardView_staySafe = findViewById(R.id.cardView_protectYourself);
         cardView_mapActivity = findViewById(R.id.cardView_Visualize);
         cardView_updateSymptoms = findViewById(R.id.cardView_updateSymptoms);
+        button_dashboardAbout = findViewById(R.id.button_dashboardAbout);
+        button_dashboardLegal = findViewById(R.id.button_dashboardLegal);
         nestedScrollView = findViewById(R.id.nestedScrollView);
 
         cardView_staySafe.setOnTouchListener(new onTouch());
         cardView_mapActivity.setOnTouchListener(new onTouch());
         cardView_updateSymptoms.setOnTouchListener(new onTouch());
+        button_dashboardAbout.setOnClickListener(new onClick());
+        button_dashboardLegal.setOnClickListener(new onClick());
     }
 
     //----------------------------------------------------------------------------------------------Click animation
@@ -56,6 +63,27 @@ public class DashboardActivity extends AppCompatActivity {
             }
             return false;
         }
+    }
+
+    public class onClick implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.button_dashboardAbout:
+                    goToUrl("https://sites.google.com/view/contraplus");
+                    break;
+                case R.id.button_dashboardLegal:
+                    goToUrl("https://sites.google.com/view/contraplus/privacy-policy");
+                    break;
+            }
+        }
+    }
+
+    public void goToUrl (String url){
+        Uri uri = Uri.parse(url);
+        Intent launch = new Intent(Intent.ACTION_VIEW, uri);
+        launch.addCategory(Intent.CATEGORY_BROWSABLE);
+        startActivity(launch);
     }
 
     public void goToStaySafe(View view){

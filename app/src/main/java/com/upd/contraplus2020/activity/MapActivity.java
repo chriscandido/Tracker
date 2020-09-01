@@ -20,8 +20,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
+import com.example.tracker.UserLocationHistoryQuery;
 import com.upd.contraplus2020.R;
 import com.upd.contraplus2020.db.UserDBHandler;
+import com.upd.contraplus2020.service.ApolloClient;
 import com.upd.contraplus2020.utils.Constants;
 import com.upd.contraplus2020.utils.HaversineFormula;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -42,9 +47,13 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonOptions;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.utils.BitmapUtils;
+import com.upd.contraplus2020.utils.UserLatLng;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
@@ -54,7 +63,7 @@ public class MapActivity extends AppCompatActivity {
 
     UserDBHandler userDBHandler = new UserDBHandler(this);
 
-    FloatingActionButton button_FloatingAction, button_Hospital, button_Clinic, button_Pharmacy;
+    FloatingActionButton button_FloatingAction, button_Hospital, button_Clinic, button_Pharmacy, button_Route;
 
     public MapView mapView;
     public MapboxMap map;
@@ -64,6 +73,8 @@ public class MapActivity extends AppCompatActivity {
     Float translationY = 100f;
     Boolean isMenuOpen = false;
     OvershootInterpolator overshootInterpolator = new OvershootInterpolator();
+
+    private ArrayList<UserLatLng> latLngList = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,14 +96,17 @@ public class MapActivity extends AppCompatActivity {
         button_Hospital = findViewById(R.id.floating_actionButton_hospital);
         button_Clinic = findViewById(R.id.floating_actionButton_Clinic);
         button_Pharmacy = findViewById(R.id.floating_actionButton_Pharmacy);
+        button_Route = findViewById(R.id.floating_actionButton_routeHistory);
 
         button_Hospital.setAlpha(0f);
         button_Clinic.setAlpha(0f);
         button_Pharmacy.setAlpha(0f);
+        button_Route.setAlpha(0f);
 
         button_Hospital.setTranslationY(translationY);
         button_Clinic.setTranslationY(translationY);
         button_Pharmacy.setTranslationY(translationY);
+        button_Route.setTranslationY(translationY);
 
         button_FloatingAction.setOnClickListener(new onClick());
     }
@@ -103,6 +117,7 @@ public class MapActivity extends AppCompatActivity {
         button_Hospital.animate().translationY(0f).alpha(1f).setInterpolator(overshootInterpolator).setDuration(300).start();
         button_Clinic.animate().translationY(0f).alpha(1f).setInterpolator(overshootInterpolator).setDuration(300).start();
         button_Pharmacy.animate().translationY(0f).alpha(1f).setInterpolator(overshootInterpolator).setDuration(300).start();
+        button_Route.animate().translationY(0f).alpha(1f).setInterpolator(overshootInterpolator).setDuration(300).start();
     }
 
     private void closeMenu(){
@@ -111,6 +126,7 @@ public class MapActivity extends AppCompatActivity {
         button_Hospital.animate().translationY(translationY).alpha(0f).setInterpolator(overshootInterpolator).setDuration(300).start();
         button_Clinic.animate().translationY(translationY).alpha(0f).setInterpolator(overshootInterpolator).setDuration(300).start();
         button_Pharmacy.animate().translationY(translationY).alpha(0f).setInterpolator(overshootInterpolator).setDuration(300).start();
+        button_Route.animate().translationY(translationY).alpha(0f).setInterpolator(overshootInterpolator).setDuration(300).start();
     }
 
     public class onClick implements View.OnClickListener {
@@ -302,6 +318,27 @@ public class MapActivity extends AppCompatActivity {
             }
         });
 
+        button_Route.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                map.removeAnnotations();
+                queryLocation();
+                int coll = latLngList.size();
+                /**int coll = queryLocation().size();**/
+                for (int i = 0; i < coll; i++) {
+                    double lat = latLngList.get(i).getLatitude();
+                    double lon = latLngList.get(i).getLongitude();
+                    int createdAt = latLngList.get(i).getCreatedAt();
+                    Icon icon = drawableToIcon(getApplicationContext(), R.drawable.ic_userlocationpin);
+                    MarkerOptions options = new MarkerOptions();
+                    options.title(String.valueOf(createdAt));
+                    options.position(new LatLng(lat, lon));
+                    options.icon(icon);
+                    map.addMarker(options);
+                }
+            }
+        });
+
     }
 
     //----------------------------------------------------------------------------------------------Load GeoJson file from asset folder
@@ -340,6 +377,40 @@ public class MapActivity extends AppCompatActivity {
                mapActivity.postMarker(featureCollection);
             }
         }
+    }
+
+    //----------------------------------------------------------------------------------------------Query location history
+    public UserLocationHistoryQuery userId (String userId) {
+        UserLocationHistoryQuery uniqueId = UserLocationHistoryQuery.builder()
+                .userId(userId)
+                .build();
+        return uniqueId;
+    }
+
+    public void queryLocation(){
+
+        UserLocationHistoryQuery uniqueId = userId(userDBHandler.getKeyUniqueid());
+
+        ApolloClient.setupApollo().query(uniqueId).enqueue(new ApolloCall.Callback<UserLocationHistoryQuery.Data>() {
+            @Override
+            public void onResponse(@NotNull Response<UserLocationHistoryQuery.Data> response) {
+                Log.v("SERVER", "[#] MapActivity.java: " + response.data().user().locationHistory().size());
+                UserLatLng userLatLng;
+                int coll = response.data().user().locationHistory().size();
+                for (int i = 0; i < coll; i++){
+                    double latitude = response.data().user().locationHistory().get(i).latitude();
+                    double longitude = response.data().user().locationHistory().get(i).longitude();
+                    int createdAt = response.data().user().locationHistory().get(i).createdAt();
+                    userLatLng = new UserLatLng(latitude, longitude, createdAt);
+                    latLngList.add(userLatLng);
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull ApolloException e) {
+
+            }
+        });
     }
 
     @Override
