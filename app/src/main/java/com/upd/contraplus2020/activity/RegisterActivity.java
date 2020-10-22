@@ -308,8 +308,8 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onResponse(@NotNull Response<AddUserMutation.Data> response) {
                         assert response.data() != null;
                         String uid = response.data().addUser().id();
-                        insertToDB("c9d0ec09-a188-42a0-8b3f-fdfe383c7c46");
-                        //insertToDB(uid);
+                        //insertToDB("c9d0ec09-a188-42a0-8b3f-fdfe383c7c46");
+                        insertToDB(uid);
                         Log.v("SERVER RESPONSE", "[#] RegisterActivity.java - RESPONSE: " + response.data().toString());
                     }
 
